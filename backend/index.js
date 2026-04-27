@@ -43,7 +43,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Cadena de conexion a MongoDB Atlas
-const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@nexoconstuye.ck8s886.mongodb.net/?retryWrites=true&w=majority`;const client = new MongoClient(uri);
+const uri = "mongodb+srv://482200364_db_user:Nex0Test123@nexoconstuye.ck8s886.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(uri);
 
 // Conecta la aplicacion a MongoDB Atlas
 async function connectDB() {
