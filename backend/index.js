@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
@@ -42,8 +44,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Cadena de conexion a MongoDB Atlas
-const uri = "mongodb+srv://482200364_db_user:Nex0Test123@nexoconstuye.ck8s886.mongodb.net/?retryWrites=true&w=majority";
+// Cadena de conexion a MongoDB Atlas tomada del archivo .env
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 
 // Conecta la aplicacion a MongoDB Atlas
@@ -62,10 +64,10 @@ connectDB();
 client._io = io;
 app.set('mongoClient', client);
 
-// Configura la autenticacion con Google OAuth usando el Client ID y Client Secret
+// Configura la autenticacion con Google OAuth usando las credenciales del archivo .env
 passport.use(new GoogleStrategy({
-  clientID: "tu-client-id-aqui",
-  clientSecret: "tu-client-secret-aqui",
+  clientID:     process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL:  'http://localhost:3000/auth/google/callback'
 }, async (accessToken, refreshToken, profile, done) => {
   try {
@@ -81,7 +83,6 @@ passport.use(new GoogleStrategy({
       const result = await client.db('nexo').collection('Usuarios').insertOne({
         nombre,
         correo,
-        fotoPerfil: '',
         rol: 'usuario',
         fechaRegistro: new Date()
       });
@@ -122,7 +123,6 @@ app.get('/auth/google/callback',
       id: usuario._id,
       nombre: usuario.nombre,
       correo: usuario.correo,
-      fotoPerfil: '',
       rol: usuario.rol || 'usuario'
     }));
     res.redirect(`http://localhost:8100/login?token=${token}&usuario=${datos}`);
