@@ -1,0 +1,53 @@
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 12px;
+  color: var(--ion-color-medium);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 12px;
+  color: var(--ion-color-medium);
+}
+
+.empty-state ion-icon {
+  font-size: 64px;
+  opacity: 0.4;
+}
+
+.empty-state p {
+  font-size: 16px;
+}
+
+ion-item.no-leido {
+  --background: rgba(var(--ion-color-primary-rgb), 0.06);
+}
+
+ion-item.no-leido h2 {
+  font-weight: 700;
+}
+
+.avatar-icon {
+  font-size: 40px;
+  color: var(--ion-color-medium);
+}
+
+.ultimo-mensaje {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+.fecha-mensaje {
+  font-size: 11px;
+  color: var(--ion-color-medium);
+}

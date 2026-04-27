@@ -1,0 +1,233 @@
+:host {
+  background: #000;
+}
+
+ion-content {
+  --background: #000;
+}
+
+.explorar-container {
+  padding: 16px;
+}
+
+.filtros-activos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filtro-chip {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 13px;
+  color: #fff;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.4);
+
+  ion-icon {
+    font-size: 64px;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+}
+
+.grid-profesionales {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.pro-card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.card-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  ion-icon {
+    font-size: 48px;
+    color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.card-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 500;
+
+  // Color morado oscuro - Profesionales del Diseño
+  &.tag-diseno {
+    background: #5a3a6a;
+  }
+
+  // Color dorado oscuro - Constructores y Contratistas
+  &.tag-construccion {
+    background: #7a6020;
+  }
+
+  // Color azul oscuro - Especialistas en Ingenieria
+  &.tag-ingenieria {
+    background: #3a5a8a;
+  }
+}
+
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+
+  ion-icon {
+    font-size: 12px;
+  }
+}
+
+.card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+
+  ion-icon {
+    font-size: 11px;
+  }
+}
+
+.nexo-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 20px 40px;
+  margin-top: 40px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer-logo-izq {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-logo-der {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  li {
+    font-size: 13px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover { color: #fff; }
+
+    strong {
+      color: #fff;
+      font-weight: 600;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .nexo-footer { padding: 24px 16px; }
+
+  .footer-inner {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .footer-logo-izq,
+  .footer-logo-der {
+    height: 36px;
+  }
+}

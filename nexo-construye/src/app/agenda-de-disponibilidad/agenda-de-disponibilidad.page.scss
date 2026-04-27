@@ -1,0 +1,111 @@
+.agenda-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.agenda-subtitulo {
+  color: var(--ion-color-medium);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.seccion-card {
+  background: var(--ion-card-background, #fff);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.seccion-titulo {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ion-color-dark);
+  margin: 0 0 12px 0;
+}
+
+.date-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: var(--ion-color-dark);
+  outline: none;
+  box-sizing: border-box;
+
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+}
+
+.rango-inputs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.rango-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 140px;
+
+  label {
+    font-size: 0.72rem;
+    color: var(--ion-color-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.btn-bloquear-rango {
+  margin-top: 4px;
+}
+
+.btn-guardar-horas {
+  margin-top: 16px;
+}
+
+.horas-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+ion-chip {
+  cursor: pointer;
+  transition: transform 0.1s;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.bloqueo-item {
+  --border-radius: 8px;
+  --background: var(--ion-color-light);
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    font-size: 56px;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+}

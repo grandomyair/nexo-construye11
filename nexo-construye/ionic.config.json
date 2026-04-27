@@ -1,0 +1,7 @@
+{
+  "name": "nexo construye",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

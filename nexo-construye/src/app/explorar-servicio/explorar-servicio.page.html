@@ -1,0 +1,86 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ modo === 'explorar' ? 'Explorar' : 'Resultados' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="explorar-container">
+
+    <div class="filtros-activos" *ngIf="modo === 'buscar' && (profesiones.length > 0 || fechaFiltro)">
+      <span *ngFor="let profesion of profesiones" class="filtro-chip">{{ profesion }}</span>
+      <span *ngIf="fechaFiltro" class="filtro-chip">📅 {{ fechaFiltro }}</span>
+    </div>
+
+    <div class="loading" *ngIf="cargando">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <div class="empty" *ngIf="!cargando && profesionales.length === 0">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <p>No se encontraron profesionales disponibles</p>
+    </div>
+
+    <div class="grid-profesionales" *ngIf="!cargando && profesionales.length > 0">
+      <div class="pro-card" *ngFor="let profesional of profesionales" (click)="router.navigate(['/perfil-profesional', profesional._id])">
+
+        <div class="card-img">
+          <img *ngIf="profesional.fotoPerfil" [src]="profesional.fotoPerfil" alt="foto">
+          <ion-icon *ngIf="!profesional.fotoPerfil" name="person-circle-outline"></ion-icon>
+        </div>
+
+        <div class="card-body">
+          <div class="card-top">
+            <span class="card-tag" [class.tag-diseno]="['Arquitecto','Diseñador de Interiores','Paisajista'].includes(profesional.profesion)"
+             [class.tag-construccion]="['Albañil','Carpintero','Techador','Soldador','Herrero','Yesero','Instalador de Pisos','Contratista General','Pintor'].includes(profesional.profesion)"
+             [class.tag-ingenieria]="['Ingeniero Civil','Electricista','Plomero','Topógrafo','Otro'].includes(profesional.profesion)">
+              {{ profesional.profesion }}
+            </span>
+            <span class="card-rating">
+              <ion-icon name="star-outline"></ion-icon>
+              {{ profesional.calificacionPromedio || '—' }}
+            </span>
+          </div>
+          <div class="card-name">{{ profesional.nombre }}</div>
+          <div class="card-location">
+            <ion-icon name="location-outline"></ion-icon>
+            {{ profesional.municipio }}, {{ profesional.estado }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <footer class="nexo-footer">
+  <div class="footer-inner">
+    <img src="assets/Logos Labsol 2023-02.png" alt="Labsol" class="footer-logo-izq">
+    <div class="footer-links">
+      <div class="footer-col">
+        <ul>
+          <li (click)="Rutas('/politica-de-reservacion')">Política de reservación</li>
+          <li (click)="Rutas('/politica-de-cancelacion')">Política de cancelación</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <ul>
+          <li (click)="Rutas('/acerca-de')">Acerca de</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <ul>
+          <li (click)="Rutas('/politica-de-privacidad')">Política de Privacidad</li>
+          <li (click)="Rutas('/terminos-y-condiciones')">Términos y Condiciones</li>
+        </ul>
+      </div>
+    </div>
+    <img src="assets/GPLv3_Logo.svg.png" alt="GPLv3" class="footer-logo-der">
+  </div>
+</footer>
+
+    
+
+  </div>
+</ion-content>

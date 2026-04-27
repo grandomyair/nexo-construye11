@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/mis-reservaciones"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Calificar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="calificar-container">
+
+    <div class="calificar-card">
+
+      <h2 class="calificar-titulo">¿Cómo fue tu experiencia?</h2>
+      <p class="calificar-subtitulo">{{ nombreProfesional }}</p>
+
+      <div class="estrellas-container">
+        <span
+          *ngFor="let n of estrellas"
+          class="estrella"
+          [class.activa]="n <= calificacion"
+          (click)="seleccionarEstrella(n)">
+          <ion-icon [name]="n <= calificacion ? 'star' : 'star-outline'"></ion-icon>
+        </span>
+      </div>
+
+      <p class="calificacion-texto" *ngIf="calificacion > 0">
+        {{ calificacion }} de 5 estrellas
+      </p>
+
+      <div class="comentario-section">
+        <p class="comentario-label">Comentario (opcional)</p>
+        <textarea
+          class="comentario-input"
+          [(ngModel)]="comentario"
+          placeholder="Describe tu experiencia con este profesional..."
+          rows="4">
+        </textarea>
+      </div>
+
+      <ion-button
+        expand="block"
+        (click)="enviarCalificacion()"
+        [disabled]="calificacion === 0 || enviando"
+        class="btn-enviar">
+        <ion-icon name="star" slot="start"></ion-icon>
+        {{ enviando ? 'Enviando...' : 'Enviar calificación' }}
+      </ion-button>
+
+    </div>
+
+  </div>
+</ion-content>

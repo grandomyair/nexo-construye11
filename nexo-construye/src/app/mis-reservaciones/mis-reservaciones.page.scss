@@ -1,0 +1,25 @@
+.loading, .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 12px;
+  color: rgba(255,255,255,0.3);
+
+  ion-icon { font-size: 48px; }
+  p { font-size: 0.9rem; margin: 0; }
+}
+
+ion-segment { margin: 16px; }
+
+.res-acciones {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+ion-badge {
+  margin-top: 6px;
+  display: inline-block;
+}

@@ -1,0 +1,224 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil Profesional</ion-title>
+    <ion-buttons slot="end" *ngIf="esPropietario">
+      <ion-button (click)="irAMensajes()">
+        <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+        <ion-badge *ngIf="totalNoLeidos > 0" color="danger" class="badge-campana">
+          {{ totalNoLeidos }}
+        </ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="perfil-container" *ngIf="profesional">
+    <div class="perfil-card">
+
+      <div class="perfil-top">
+        <div class="avatar-wrapper">
+          <ion-avatar class="perfil-avatar">
+            <img *ngIf="profesional?.fotoPerfil" [src]="profesional.fotoPerfil" alt="Foto de perfil">
+            <ion-icon *ngIf="!profesional?.fotoPerfil" name="person-circle-outline"></ion-icon>
+          </ion-avatar>
+          <span class="estado-dot" [class.activo]="profesional?.estadoPerfil === 'activo'" [class.inactivo]="profesional?.estadoPerfil !== 'activo'">
+          </span>
+        </div>
+
+        <div class="perfil-info-main">
+          <div>
+            <h2 class="perfil-nombre">{{ profesional?.nombre || 'Profesional' }}</h2>
+            <p class="perfil-profesion">{{ profesional?.profesion }}
+              <span *ngIf="profesional?.especialidad"> · {{ profesional?.especialidad }}</span>
+            </p>
+          </div>
+          <div class="chips">
+            <span class="chip" *ngIf="profesional?.correo && esPropietario">
+              <ion-icon name="mail-outline"></ion-icon>{{ profesional.correo }}
+            </span>
+            <span class="chip">
+              <ion-icon name="star-outline"></ion-icon>{{ anosExperiencia }} años de experiencia
+            </span>
+            <span class="chip" *ngIf="profesional?.cedulaProfesional && esPropietario">
+              <ion-icon name="id-card-outline"></ion-icon>Cédula: {{ profesional.cedulaProfesional }}
+            </span>
+            <span class="chip" *ngIf="profesional?.municipio">
+              <ion-icon name="location-outline"></ion-icon>{{ profesional.municipio }}
+            </span>
+            <span class="chip chip-rating">
+              <span *ngFor="let s of estrellas" class="star-perfil" [class.llena]="s <= (profesional?.calificacionPromedio || 0)">★</span>
+              {{ profesional?.calificacionPromedio || '0' }}/5
+              <span style="opacity:0.5">({{ totalResenas }} reseñas)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="perfil-bottom">
+        <div class="seccion" *ngIf="profesional?.edad || profesional?.estado || profesional?.municipio">
+          <p class="seccion-titulo">Datos personales</p>
+          <div class="dato-grid">
+            <div class="dato-fila" *ngIf="profesional?.edad">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <div><p class="dato-label">Edad</p><p class="dato-val">{{ profesional.edad }} años</p></div>
+            </div>
+            <div class="dato-fila" *ngIf="profesional?.estado">
+              <ion-icon name="map-outline"></ion-icon>
+              <div><p class="dato-label">Estado</p><p class="dato-val">{{ profesional.estado }}</p></div>
+            </div>
+            <div class="dato-fila" *ngIf="profesional?.municipio">
+              <ion-icon name="location-outline"></ion-icon>
+              <div><p class="dato-label">Municipio</p><p class="dato-val">{{ profesional.municipio }}</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="seccion" *ngIf="profesional?.biografia">
+          <p class="seccion-titulo">Biografía</p>
+          <p class="bio-text">{{ profesional.biografia }}</p>
+        </div>
+      </div>
+
+      <div class="perfil-acciones" *ngIf="esPropietario">
+  <ion-button fill="outline" size="small" [routerLink]="['/actualizar-perfil-profesional', userId]">
+    <ion-icon name="create-outline" slot="start"></ion-icon>Editar perfil
+  </ion-button>
+  <ion-button fill="outline" size="small" [routerLink]="['/agenda-de-disponibilidad', userId]">
+    <ion-icon name="calendar-outline" slot="start"></ion-icon>Agenda
+  </ion-button>
+  <ion-button fill="outline" size="small" [routerLink]="['/subir-proyecto', userId]">
+    <ion-icon name="images-outline" slot="start"></ion-icon>Subir proyecto
+  </ion-button>
+  <ion-button fill="outline" size="small" routerLink="/mis-reservaciones">
+    <ion-icon name="calendar-outline" slot="start"></ion-icon>Mis reservaciones
+  </ion-button>
+  <div class="btn-chat-wrapper">
+    <ion-button fill="outline" size="small" routerLink="/solicitudes">
+      <ion-icon name="time-outline" slot="start"></ion-icon>Solicitudes
+    </ion-button>
+    <ion-badge *ngIf="totalSolicitudes > 0" color="danger" class="badge-chat">
+      {{ totalSolicitudes }}
+    </ion-badge>
+  </div>
+  <ion-button fill="outline" size="small" [routerLink]="['/resenas', userId]" [queryParams]="{ nombre: profesional?.nombre }">
+    <ion-icon name="star-outline" slot="start"></ion-icon>Reseñas
+  </ion-button>
+  <div class="btn-chat-wrapper">
+    <ion-button fill="outline" size="small" routerLink="/conversaciones">
+      <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>Chats
+    </ion-button>
+    <ion-badge *ngIf="totalNoLeidos > 0" color="danger" class="badge-chat">
+      {{ totalNoLeidos }}
+    </ion-badge>
+  </div>
+</div>
+
+      <div class="perfil-acciones-visitante" *ngIf="!esPropietario && isLoggedIn">
+        <div class="selector-fecha">
+          <p class="selector-label">Selecciona una fecha</p>
+          <input type="date" class="date-input-perfil"
+            [(ngModel)]="fechaSeleccionada" [attr.min]="hoy"
+            (change)="onFechaSeleccionada()">
+        </div>
+
+        <div class="selector-horas" *ngIf="fechaSeleccionada">
+          <p class="selector-label">Selecciona una hora</p>
+          <div *ngIf="cargandoHoras" style="font-size:0.8rem; color: rgba(255,255,255,0.4)">
+            Cargando horas...
+          </div>
+          <div class="horas-grid" *ngIf="!cargandoHoras">
+            <span *ngFor="let hora of todasLasHoras" class="hora-chip" [class.bloqueada]="estaBloqueda(hora)" [class.seleccionada]="horaSeleccionada === hora"
+             [class.reservada]="horaReservada === hora" (click)="seleccionarHora(hora)">
+              {{ hora }}
+            </span>
+          </div>
+        </div>
+
+        <ion-button *ngIf="fechaSeleccionada && horaSeleccionada && !chatHabilitado" fill="outline" size="small" (click)="enviarReserva()">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>Solicitar servicio
+        </ion-button>
+
+        <ion-button *ngIf="chatHabilitado" fill="outline" size="small" (click)="abrirChat()">
+          <ion-icon name="chatbubble-outline" slot="start"></ion-icon>Enviar mensaje
+        </ion-button>
+
+        <ion-button *ngIf="puedeCalificar" fill="outline" size="small" [routerLink]="['/calificar', userId]" [queryParams]="{ profesionalId: userId, nombreProfesional: profesional?.nombre }">
+          <ion-icon name="star-outline" slot="start"></ion-icon>Calificar
+        </ion-button>
+
+        <ion-button fill="outline" size="small" [routerLink]="['/resenas', userId]" [queryParams]="{ nombre: profesional?.nombre }">
+          <ion-icon name="star-outline" slot="start"></ion-icon>Ver reseñas
+        </ion-button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="proyectos-feed" *ngIf="profesional">
+    <div class="proyectos-feed-titulo">
+      <ion-icon name="images-outline"></ion-icon>
+      <span>Proyectos</span>
+    </div>
+
+    <div *ngIf="cargandoProyectos" class="loading">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <div *ngIf="!cargandoProyectos && proyectosVisibles.length === 0" class="empty-proyectos">
+      <ion-icon name="images-outline"></ion-icon>
+      <p>Sin proyectos aún</p>
+    </div>
+
+    <div class="proyecto-card" *ngFor="let proyecto of proyectosVisibles">
+      <div class="proyecto-galeria" [class.una-imagen]="proyecto.imagenes?.length === 1">
+        <div class="galeria-item" *ngFor="let img of proyecto.imagenes; let i = index" (click)="abrirVisor(proyecto.imagenes, i)">
+          <img [src]="img" alt="imagen proyecto">
+        </div>
+        <div class="sin-imagen" *ngIf="!proyecto.imagenes?.length">
+          <ion-icon name="image-outline"></ion-icon>
+        </div>
+      </div>
+      <div class="proyecto-info">
+        <h3 class="proyecto-titulo">{{ proyecto.titulo || 'Sin título' }}</h3>
+        <p class="proyecto-descripcion">{{ proyecto.descripcion || 'Sin descripción' }}</p>
+        <span class="proyecto-fecha">
+          <ion-icon name="calendar-outline"></ion-icon>
+          {{ proyecto.fecha | date: 'dd/MM/yyyy' }}
+        </span>
+      </div>
+    </div>
+
+    <ion-infinite-scroll (ionInfinite)="cargarMasProyectos($event)">
+      <ion-infinite-scroll-content loadingText="Cargando más proyectos...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+  <div *ngIf="!profesional" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando perfil...</p>
+  </div>
+
+</ion-content>
+
+<div class="visor-overlay" *ngIf="visorAbierto" (click)="cerrarVisor()">
+  <div class="visor-contenido" (click)="$event.stopPropagation()">
+    <button class="visor-cerrar" (click)="cerrarVisor()">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+    <button class="visor-nav izq" (click)="imagenAnterior()" *ngIf="imagenesVisor.length > 1">
+      <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
+    <img [src]="imagenesVisor[imagenActual]" class="visor-imagen" alt="imagen">
+    <button class="visor-nav der" (click)="imagenSiguiente()" *ngIf="imagenesVisor.length > 1">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+    <div class="visor-contador" *ngIf="imagenesVisor.length > 1">
+      {{ imagenActual + 1 }} / {{ imagenesVisor.length }}
+    </div>
+  </div>
+</div>

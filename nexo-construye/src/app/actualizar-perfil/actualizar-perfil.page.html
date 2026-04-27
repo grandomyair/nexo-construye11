@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/perfil-usuario/{{userId}}"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Actualizar Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="foto-container">
+    <ion-avatar class="avatar-grande">
+      <img *ngIf="previewFoto" [src]="previewFoto" alt="Foto de perfil">
+      <ion-icon *ngIf="!previewFoto" name="person-circle-outline"></ion-icon>
+    </ion-avatar>
+    <ion-button fill="clear" (click)="seleccionarFoto()">
+      <ion-icon slot="start" name="camera-outline"></ion-icon>
+      Cambiar foto
+    </ion-button>
+    <input type="file" #fileInput accept="image/*" (change)="onFotoSeleccionada($event)" style="display:none">
+  </div>
+
+  <form #actualizarForm="ngForm" (ngSubmit)="actualizarPerfil()">
+
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="form.nombre" name="nombre"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Edad</ion-label>
+      <ion-input type="number" [(ngModel)]="form.edad" name="edad" min="1" max="120"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Estado</ion-label>
+      <ion-select
+        [(ngModel)]="form.estadoId"
+        name="estadoId"
+        (ngModelChange)="onEstadoChange()"
+        placeholder="Selecciona un estado">
+        <ion-select-option *ngFor="let estado of estados" [value]="estado._id">
+          {{ estado.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item *ngIf="municipios.length > 0">
+      <ion-label position="floating">Municipio</ion-label>
+      <ion-select
+        [(ngModel)]="form.municipio"
+        name="municipio"
+        placeholder="Selecciona un municipio">
+        <ion-select-option *ngFor="let mun of municipios" [value]="mun.nombre">
+          {{ mun.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button
+      expand="block"
+      type="submit"
+      class="ion-margin-top"
+      [disabled]="cargando">
+      {{ cargando ? 'Guardando...' : 'Guardar cambios' }}
+    </ion-button>
+
+  </form>
+
+</ion-content>

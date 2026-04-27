@@ -1,0 +1,113 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/perfil-profesional/' + userId"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Editar Perfil Profesional</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="form-container">
+
+    <div class="foto-section">
+      <div class="avatar-estado-wrapper">
+        <div class="avatar-wrapper" (click)="seleccionarFoto()">
+          <ion-avatar class="form-avatar">
+            <img *ngIf="previewFoto" [src]="previewFoto" alt="Foto">
+            <ion-icon *ngIf="!previewFoto" name="person-circle-outline"></ion-icon>
+          </ion-avatar>
+          <div class="camera-overlay">
+            <ion-icon name="camera-outline"></ion-icon>
+          </div>
+        </div>
+
+        <div class="estado-badge"
+          [class.activo]="form.estadoPerfil === 'activo'"
+          [class.inactivo]="form.estadoPerfil !== 'activo'">
+          {{ form.estadoPerfil === 'activo' ? 'Activo' : 'Inactivo' }}
+        </div>
+      </div>
+
+      <div class="estado-toggle-row">
+        <span>{{ form.estadoPerfil === 'activo' ? 'Desactivar perfil' : 'Activar perfil' }}</span>
+        <ion-toggle
+          [checked]="form.estadoPerfil === 'activo'"
+          (ionChange)="onToggleEstado($event)"
+          [color]="form.estadoPerfil === 'activo' ? 'success' : 'danger'">
+        </ion-toggle>
+      </div>
+
+      <input #fileInput type="file" accept="image/*" hidden (change)="onFotoSeleccionada($event)">
+    </div>
+
+    <form>
+      <div class="section-title">Datos Personales</div>
+
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [(ngModel)]="form.nombre" name="nombre" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Edad</ion-label>
+        <ion-input [(ngModel)]="form.edad" name="edad" type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Estado</ion-label>
+        <ion-select [(ngModel)]="form.estadoId" name="estadoId"
+          (ionChange)="onEstadoChange()" placeholder="Selecciona estado">
+          <ion-select-option *ngFor="let e of estados" [value]="e._id">
+            {{ e.nombre }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Municipio</ion-label>
+        <ion-select [(ngModel)]="form.municipio" name="municipio"
+          [disabled]="municipios.length === 0" placeholder="Selecciona municipio">
+          <ion-select-option *ngFor="let m of municipios" [value]="m.nombre">
+            {{ m.nombre }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div class="section-title">Datos Profesionales</div>
+
+      <ion-item>
+        <ion-label position="floating">Profesión</ion-label>
+        <ion-input [(ngModel)]="form.profesion" name="profesion" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Especialidad</ion-label>
+        <ion-input [(ngModel)]="form.especialidad" name="especialidad" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Años de experiencia</ion-label>
+        <ion-input [(ngModel)]="form.anosExperiencia" name="anosExperiencia" type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Cédula profesional</ion-label>
+        <ion-input [(ngModel)]="form.cedulaProfesional" name="cedulaProfesional" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Biografía</ion-label>
+        <ion-textarea [(ngModel)]="form.biografia" name="biografia"
+          rows="4" [autoGrow]="true"></ion-textarea>
+      </ion-item>
+
+      <div class="btn-section">
+        <ion-button expand="block" [disabled]="cargando" (click)="actualizarPerfil()">
+          {{ cargando ? 'Guardando...' : 'Guardar cambios' }}
+        </ion-button>
+      </div>
+    </form>
+
+  </div>
+</ion-content>

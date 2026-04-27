@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ nombreOtro }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" #contenido>
+  <div class="chat-container">
+
+    <div *ngIf="cargando" class="loading">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <div *ngIf="!cargando && mensajes.length === 0" class="empty">
+      <p>Sé el primero en escribir</p>
+    </div>
+
+    <div *ngFor="let msg of mensajes" class="mensaje-wrapper"
+      [class.mio]="esMio(msg)" [class.otro]="!esMio(msg)">
+      <div class="burbuja">
+        <span class="nombre" *ngIf="!esMio(msg)">{{ msg.nombreAutor }}</span>
+        <p class="texto">{{ msg.texto }}</p>
+        <span class="hora">{{ msg.fecha | date:'HH:mm' }}</span>
+      </div>
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div class="input-bar">
+    <ion-input [(ngModel)]="textoMensaje" placeholder="Escribe un mensaje..."
+      (keyup.enter)="enviarMensaje()" class="input-mensaje">
+    </ion-input>
+    <ion-button fill="clear" (click)="enviarMensaje()"
+      [disabled]="!textoMensaje.trim() || enviando">
+      <ion-icon name="send-outline"></ion-icon>
+    </ion-button>
+  </div>
+</ion-footer>

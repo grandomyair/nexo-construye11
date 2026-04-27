@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mis Reservaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-segment [(ngModel)]="segmento" (ionChange)="cambiarSegmento()" *ngIf="esProfesional">
+    <ion-segment-button value="cliente">
+      <ion-label>Como Cliente</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="profesional">
+      <ion-label>Como Profesional</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="cargando" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="!cargando && reservaciones.length === 0" class="empty">
+    <ion-icon name="calendar-outline"></ion-icon>
+    <p>No tienes reservaciones aún</p>
+  </div>
+
+  <ion-list *ngIf="!cargando && reservaciones.length > 0" lines="full">
+    <ion-item *ngFor="let res of reservaciones">
+
+      <ion-icon [name]="getEstadoIcono(res.estado)" slot="start"[color]="getEstadoColor(res.estado)">
+      </ion-icon>
+
+      <ion-label>
+        <h2>{{ segmento === 'cliente' ? res.nombreProfesional : res.nombreCliente }}</h2>
+        <p>{{ res.fecha }} — {{ res.hora }}</p>
+        <p *ngIf="res.servicio">{{ res.servicio }}</p>
+        <ion-badge [color]="getEstadoColor(res.estado)">{{ res.estado }}</ion-badge>
+
+        <div class="res-acciones">
+          <ion-button *ngIf="segmento === 'profesional' && res.estado === 'confirmada'" size="small" fill="outline" color="primary"
+             (click)="completarReservacion(res._id)">
+            <ion-icon name="construct-outline" slot="start"></ion-icon>
+            Marcar completado
+          </ion-button>
+
+          <ion-button
+            *ngIf="segmento === 'cliente' && res.estado === 'completada'"
+            size="small" fill="outline" color="warning"
+            (click)="irACalificar(res)">
+            <ion-icon name="star-outline" slot="start"></ion-icon>
+            Calificar
+          </ion-button>
+        </div>
+      </ion-label>
+
+    </ion-item>
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,167 @@
+<ion-content [fullscreen]="true">
+  <div class="home-container">
+
+    <div class="header">
+      <h1 class="logo" routerLink="/nexo-home" style="cursor: pointer;">Nexo</h1>
+
+      <div class="header-buttons" *ngIf="!isLoggedIn">
+        <ion-button fill="clear" routerLink="/login">Iniciar Sesión</ion-button>
+        <ion-button fill="clear" routerLink="/registro-usuario">Registrarse</ion-button>
+        <ion-button fill="outline" (click)="abrirBuscar()">Buscar</ion-button>
+      </div>
+
+      <div class="user-section" *ngIf="isLoggedIn">
+        <ion-button fill="outline" class="search-btn-header" (click)="abrirBuscar()">Buscar</ion-button>
+        <div class="user-dropdown">
+          <div class="user-trigger" (click)="toggleMenu()">
+            <div class="avatar-notif-wrapper">
+              <ion-avatar class="user-avatar">
+                <img *ngIf="usuario?.fotoPerfil" [src]="usuario.fotoPerfil" alt="Avatar">
+                <ion-icon *ngIf="!usuario?.fotoPerfil" name="person-circle-outline"></ion-icon>
+              </ion-avatar>
+              <ion-badge *ngIf="totalNotificaciones > 0" color="danger" class="badge-avatar">
+                {{ totalNotificaciones }}
+              </ion-badge>
+            </div>
+            <span class="user-name">{{ usuario?.nombre || 'Usuario' }}</span>
+          </div>
+          <div class="dropdown-menu" *ngIf="menuOpen">
+            <div class="menu-item" (click)="verPerfil()">
+              <ion-icon name="person-outline"></ion-icon>
+              <span>Ver mi perfil</span>
+            </div>
+            <div class="menu-item logout" (click)="logout()">
+              <ion-icon name="log-out-outline"></ion-icon>
+              <span>Cerrar sesión</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="welcome-section">
+        <p>Bienvenido a nexo</p>
+        <p>un lugar centralizado en servicios en el sector de la construcción.</p>
+        <p>Nos dedicamos a facilitar la conexión entre profesionales y empresas en</p>
+        <p>la industria de la construcción para simplificar y potenciar tus proyectos.</p>
+        <ion-button class="search-btn" fill="outline" (click)="abrirBuscar()">buscar</ion-button>
+      </div>
+    </div>
+
+    <div class="scroll-arrow" (click)="scrollToExplore()">
+      <ion-icon name="chevron-down-outline"></ion-icon>
+    </div>
+
+    <div class="explore-section" id="explore-section">
+
+      <div *ngIf="categorias.length === 0" style="color: rgba(255,255,255,0.4); font-size: 14px; padding: 16px;">
+        Aún no hay profesionales registrados.
+      </div>
+
+      <div class="category-block" *ngFor="let cat of categorias">
+        <div class="category-label" [style.background]="cat.color">
+          {{ cat.nombre }}
+        </div>
+        <div class="cards-row">
+          <div class="pro-card" *ngFor="let pro of cat.profesionales" (click)="router.navigate(['/perfil-profesional', pro._id])">
+            <div class="card-img-placeholder">
+              <img *ngIf="pro.fotoPerfil" [src]="pro.fotoPerfil" alt="foto" style="width:100%;height:100%;object-fit:cover;border-radius:8px 8px 0 0;">
+            </div>
+            <div class="card-info">
+              <span class="card-tag" [style.background]="cat.color">{{ pro.profesion }}</span>
+              <div class="card-rating-stars">
+                <span *ngFor="let s of [1,2,3,4,5]" class="star"
+                  [class.llena]="s <= (pro.calificacionPromedio || 0)">★</span>
+                <span class="card-rating-num">{{ pro.calificacionPromedio || '—' }}</span>
+              </div>
+            </div>
+            <div class="card-name">{{ pro.nombre }}</div>
+            <div class="card-location">{{ pro.municipio }}, {{ pro.estado }}</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="nexo-footer">
+  <div class="footer-inner">
+    <img src="assets/Logos Labsol 2023-02.png" alt="Labsol" class="footer-logo-izq">
+    <div class="footer-col">
+      <ul>
+        <li (click)="scrollToTop()">Inicio</li>
+        <li (click)="irAExplorar()"><strong>Explorar Servicios</strong></li>
+        <li routerLink="/acerca-de-nosotros">Acerca de nosotros</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <ul>
+        <li routerLink="/politica-de-reservacion">Política de reservación</li>
+        <li routerLink="/politica-de-cancelacion">Política de cancelación</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <ul>
+        <li routerLink="/politica-de-privacidad">Política de Privacidad</li>
+        <li routerLink="/terminos-y-condiciones">Términos y Condiciones</li>
+      </ul>
+    </div>
+    <img src="assets/GPLv3_Logo.svg.png" alt="GPLv3" class="footer-logo-der">
+  </div>
+</footer>
+
+    <div class="search-overlay" *ngIf="mostrarBuscar">
+      <div class="panel-box">
+        <div class="panel-left">
+          <h4>Como Buscar</h4>
+          <ul>
+            <li>Selecciona las fecha en la que deseas contratar un servicio</li>
+            <li>Selecciona todas las etiquetas de servicios que deseas encontrar</li>
+            <li>Presiona el botón "Busca"</li>
+          </ul>
+          <div class="section-divider">
+            <h4>Explorar</h4>
+            <ul>
+              <li>Para explorar el sitio sin previo filtro de búsqueda, solo presiona "Explorar"</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel-center">
+          <div class="cal-header">
+            <span class="cal-month">{{ monthName }}</span>
+            <button class="cal-nav" (click)="changeMonth(-1)">&#60;</button>
+            <button class="cal-nav" (click)="changeMonth(1)">&#62;</button>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-weekday" *ngFor="let d of weekDays">{{ d }}</div>
+            <div class="cal-day" *ngFor="let day of calendarDays" [class.other-month]="!day.currentMonth" [class.today]="day.isToday" [class.selected]="day.isSelected"
+            (click)="selectDay(day)">
+              {{ day.number }}
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <h4>Servicios</h4>
+          <div class="service-tags">
+            <span *ngFor="let tag of serviceTags" class="tag"[ngClass]="[tag.class, tag.selected ? 'active' : '']"(click)="toggleTag(tag)">
+              {{ tag.label }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay-footer">
+        <div class="footer-side">
+          <button class="btn-regresar" (click)="cerrarBuscar()">&#60; Regresar</button>
+        </div>
+        <button class="btn-buscar-main" (click)="irABuscar()">Buscar</button>
+        <div class="footer-side footer-right">
+          <button class="btn-explorar" (click)="irAExplorar()">Explorar &#62;</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

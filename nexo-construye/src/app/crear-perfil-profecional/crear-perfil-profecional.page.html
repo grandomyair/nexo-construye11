@@ -1,0 +1,142 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/perfil"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil Profesional</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ion-text color="medium">
+    <p>Tus datos personales se tomarán de tu perfil actual. Completa la información profesional.</p>
+  </ion-text>
+
+  <ion-list lines="full">
+
+    <ion-item>
+      <ion-label position="stacked">
+        Profesión <ion-text color="danger">*</ion-text>
+      </ion-label>
+      <ion-select [(ngModel)]="form.profesion" placeholder="Selecciona tu profesión" interface="action-sheet" cancelText="Cancelar">
+        <ion-select-option *ngFor="let p of profesiones" [value]="p">{{ p }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div class="chips-container ion-padding-start ion-padding-top" *ngIf="form.profesion">
+      <ion-chip color="primary">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        {{ form.profesion }}
+      </ion-chip>
+    </div>
+
+    <ion-item>
+      <ion-label position="stacked">Especialidad</ion-label>
+      <ion-input [(ngModel)]="form.especialidad" placeholder="Ej: Diseño de interiores..."></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Cédula Profesional</ion-label>
+      <ion-input [(ngModel)]="form.cedulaProfesional" placeholder="Número de cédula"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Años de Experiencia</ion-label>
+      <ion-input type="number" [(ngModel)]="form.anosExperiencia" placeholder="0"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Biografía</ion-label>
+      <ion-textarea  [(ngModel)]="form.biografia" rows="4" placeholder="Describe tu experiencia, habilidades y trayectoria...">
+      </ion-textarea>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-text><h3 class="ion-padding-top">Área de Servicio</h3></ion-text>
+  <ion-item>
+    <ion-input [(ngModel)]="areaServicioInput" placeholder="Ej: Plomería, Electricidad..." (keyup.enter)="agregarItem('area')">
+    </ion-input>
+    <ion-button slot="end" fill="clear" (click)="agregarItem('area')">
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <div class="chips-container ion-padding-start ion-padding-top">
+    <ion-chip *ngFor="let area of areaServicio; let i = index" color="primary">
+      {{ area }}
+      <ion-icon name="close-circle" (click)="eliminarItem('area', i)"></ion-icon>
+    </ion-chip>
+    <ion-text color="medium" *ngIf="areaServicio.length === 0">
+      <small>Agrega las áreas donde ofreces servicio</small>
+    </ion-text>
+  </div>
+
+  <ion-text><h3 class="ion-padding-top">Etiquetas</h3></ion-text>
+  <ion-item>
+    <ion-input [(ngModel)]="etiquetasInput"placeholder="Ej: Urgencias, Certificado..."(keyup.enter)="agregarItem('etiqueta')">
+    </ion-input>
+    <ion-button slot="end" fill="clear" (click)="agregarItem('etiqueta')">
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <div class="chips-container ion-padding-start ion-padding-top">
+    <ion-chip *ngFor="let etiqueta of etiquetas; let i = index" color="secondary">
+      {{ etiqueta }}
+      <ion-icon name="close-circle" (click)="eliminarItem('etiqueta', i)"></ion-icon>
+    </ion-chip>
+    <ion-text color="medium" *ngIf="etiquetas.length === 0">
+      <small>Agrega etiquetas que describan tu servicio</small>
+    </ion-text>
+  </div>
+
+  <ion-text><h3 class="ion-padding-top">Imágenes del Portafolio</h3></ion-text>
+  <ion-text color="medium">
+    <small>Sube todas las imágenes que quieras mostrar en tu portafolio.</small>
+  </ion-text>
+
+  <ion-list lines="full" class="ion-margin-top">
+    <ion-item>
+      <ion-label position="stacked">Título</ion-label>
+      <ion-input [(ngModel)]="portafolioTitulo" placeholder="Ej: Remodelación cocina 2023"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-textarea
+        [(ngModel)]="portafolioDescripcion"
+        rows="2"
+        placeholder="Describe brevemente el proyecto">
+      </ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <input #inputImagenes type="file" accept="image/*" multiple style="display:none"
+    (change)="onImagenesSeleccionadas($event)" />
+
+  <div class="ion-padding-horizontal ion-padding-top">
+    <ion-button expand="block" fill="outline" (click)="inputImagenes.click()">
+      <ion-icon name="images-outline" slot="start"></ion-icon>
+      Seleccionar Imágenes
+    </ion-button>
+  </div>
+
+  <div *ngIf="previewImagenes.length > 0" class="preview-grid ion-padding">
+    <div *ngFor="let preview of previewImagenes; let i = index" class="preview-item">
+      <img [src]="preview" alt="preview" />
+      <ion-button fill="clear" color="danger" size="small" (click)="eliminarImagen(i)">
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-text color="medium">
+      <small>{{ imagenesSeleccionadas.length }} imagen(es) lista(s) para subir</small>
+    </ion-text>
+  </div>
+
+  <div class="ion-padding ion-margin-top">
+    <ion-button expand="block" (click)="crearPerfil()" [disabled]="cargando">
+      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+      {{ cargando ? 'Creando...' : 'Crear Perfil Profesional' }}
+    </ion-button>
+  </div>
+
+</ion-content>

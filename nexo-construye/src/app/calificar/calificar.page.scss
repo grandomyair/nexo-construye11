@@ -1,0 +1,100 @@
+.calificar-container {
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.calificar-card {
+  width: 100%;
+  max-width: 500px;
+  background: rgba(255,255,255,0.05);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.calificar-titulo {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  text-align: center;
+}
+
+.calificar-subtitulo {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.45);
+  margin: 0;
+  text-align: center;
+}
+
+.estrellas-container {
+  display: flex;
+  gap: 12px;
+}
+
+.estrella {
+  cursor: pointer;
+  transition: transform 0.15s;
+
+  ion-icon {
+    font-size: 40px;
+    color: rgba(255,255,255,0.2);
+    transition: color 0.15s;
+  }
+
+  &.activa ion-icon {
+    color: #ffa534;
+  }
+
+  &:hover ion-icon {
+    transform: scale(1.1);
+  }
+}
+
+.calificacion-texto {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+.comentario-section {
+  width: 100%;
+}
+
+.comentario-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 8px;
+}
+
+.comentario-input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: #fff;
+  padding: 12px;
+  font-size: 0.9rem;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: rgba(255,255,255,0.25);
+  }
+}
+
+.btn-enviar {
+  width: 100%;
+  --border-radius: 12px;
+  --background: #a78bfa;
+  --color: #fff;
+}

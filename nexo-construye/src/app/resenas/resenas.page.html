@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reseñas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div *ngIf="cargando" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="resenas-container" *ngIf="!cargando">
+
+    <div class="resenas-header">
+      <p class="resenas-nombre">{{ nombre }}</p>
+      <div class="resenas-promedio">
+        <span *ngFor="let s of estrellas" class="star-grande"
+          [class.llena]="s <= promedio()">★</span>
+        <span class="promedio-num">{{ promedio() }}/5</span>
+      </div>
+      <p class="resenas-total">{{ resenas.length }} reseña{{ resenas.length !== 1 ? 's' : '' }}</p>
+    </div>
+
+    <div *ngIf="resenas.length === 0" class="empty">
+      <ion-icon name="star-outline"></ion-icon>
+      <p>Sin reseñas aún</p>
+    </div>
+
+    <div class="resena-card" *ngFor="let r of resenas">
+      <div class="resena-top">
+        <ion-icon name="person-circle-outline" class="resena-avatar"></ion-icon>
+        <div>
+          <p class="resena-autor">{{ r.nombreAutor }}</p>
+          <div class="resena-estrellas">
+            <span *ngFor="let s of estrellas" class="star-small"
+              [class.llena]="s <= r.calificacion">★</span>
+          </div>
+        </div>
+        <span class="resena-fecha">{{ r.fecha | date:'dd/MM/yyyy' }}</span>
+      </div>
+      <p class="resena-comentario" *ngIf="r.comentario">{{ r.comentario }}</p>
+    </div>
+
+  </div>
+
+</ion-content>

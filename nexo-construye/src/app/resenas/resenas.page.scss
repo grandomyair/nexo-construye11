@@ -1,0 +1,114 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.resenas-container {
+  padding: 20px 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.resenas-header {
+  text-align: center;
+  padding: 20px 0 24px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+}
+
+.resenas-nombre {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.resenas-promedio {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  align-items: center;
+}
+
+.star-grande {
+  font-size: 28px;
+  color: rgba(255,255,255,0.2);
+  &.llena { color: #ffa534; }
+}
+
+.promedio-num {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-left: 8px;
+}
+
+.resenas-total {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin: 6px 0 0;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px;
+  color: rgba(255,255,255,0.25);
+  ion-icon { font-size: 40px; }
+  p { margin: 0; font-size: 0.9rem; }
+}
+
+.resena-card {
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.resena-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.resena-avatar {
+  font-size: 36px;
+  color: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
+
+.resena-autor {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.resena-estrellas {
+  display: flex;
+  gap: 2px;
+}
+
+.star-small {
+  font-size: 13px;
+  color: rgba(255,255,255,0.2);
+  &.llena { color: #ffa534; }
+}
+
+.resena-fecha {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  margin-left: auto;
+}
+
+.resena-comentario {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.5;
+  margin: 0;
+}

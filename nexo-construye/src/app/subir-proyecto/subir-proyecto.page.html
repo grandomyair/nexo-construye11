@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/perfil-profesional/' + profesionalId"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Subir proyecto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="subir-container">
+
+    <div class="campo">
+      <p class="campo-label">Título</p>
+      <input class="campo-input" type="text" [(ngModel)]="titulo" placeholder="Ej: Remodelación cocina 2024">
+    </div>
+
+    <div class="campo">
+      <p class="campo-label">Descripción (opcional)</p>
+      <textarea class="campo-textarea" [(ngModel)]="descripcion" placeholder="Describe brevemente el proyecto..." rows="4">
+      </textarea>
+    </div>
+
+    <div class="campo">
+      <p class="campo-label">Imágenes</p>
+      <input #inputImg type="file" accept="image/*" multiple style="display:none" (change)="onImagenesSeleccionadas($event)">
+      <ion-button fill="outline" expand="block" (click)="inputImg.click()">
+        <ion-icon name="images-outline" slot="start"></ion-icon>
+        Seleccionar imágenes
+      </ion-button>
+    </div>
+
+    <div class="preview-grid" *ngIf="previews.length > 0">
+      <div class="preview-item" *ngFor="let p of previews; let i = index">
+        <img [src]="p" alt="preview">
+        <button class="preview-delete" (click)="eliminarImagen(i)">✕</button>
+      </div>
+    </div>
+
+    <div class="empty-preview" *ngIf="previews.length === 0">
+      <ion-icon name="images-outline"></ion-icon>
+      <p>No has seleccionado imágenes aún</p>
+    </div>
+
+    <ion-button expand="block" class="btn-subir" (click)="subirProyecto()" [disabled]="subiendo">
+      <ion-icon name="add-outline" slot="start"></ion-icon>
+      {{ subiendo ? 'Subiendo...' : 'Subir proyecto' }}
+    </ion-button>
+
+  </div>
+</ion-content>

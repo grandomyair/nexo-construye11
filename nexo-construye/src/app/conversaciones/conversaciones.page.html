@@ -1,0 +1,44 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mensajes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div *ngIf="cargando" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando conversaciones...</p>
+  </div>
+
+  <div *ngIf="!cargando && conversaciones.length === 0" class="empty-state">
+    <ion-icon name="chatbubbles-outline"></ion-icon>
+    <p>No tienes conversaciones aún</p>
+  </div>
+
+  <ion-list *ngIf="!cargando && conversaciones.length > 0" lines="full">
+    <ion-item *ngFor="let conv of conversaciones" button
+      (click)="abrirConversacion(conv)"
+      [class.no-leido]="tieneNoLeidos(conv)">
+
+      <ion-avatar slot="start" (click)="verPerfilOtro(conv, $event)" style="cursor:pointer">
+        <ion-icon name="person-circle-outline" class="avatar-icon"></ion-icon>
+      </ion-avatar>
+
+      <ion-label>
+        <h2>{{ getNombreOtro(conv) }}</h2>
+        <p class="ultimo-mensaje">{{ conv.ultimoMensaje || 'Sin mensajes aún' }}</p>
+        <p class="fecha-mensaje">{{ conv.fechaUltimoMensaje | date:'dd/MM/yyyy HH:mm' }}</p>
+      </ion-label>
+
+      <ion-badge *ngIf="tieneNoLeidos(conv)" color="danger" slot="end">
+        {{ getMensajesNoLeidos(conv) }}
+      </ion-badge>
+
+    </ion-item>
+  </ion-list>
+
+</ion-content>

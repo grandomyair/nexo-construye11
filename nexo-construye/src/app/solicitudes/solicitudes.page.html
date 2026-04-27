@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Solicitudes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div *ngIf="cargando" class="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="!cargando">
+
+    <div *ngIf="!esProfesional && reservacionesActivas.length > 0">
+      <div class="seccion-titulo">Mis reservaciones activas</div>
+      <ion-list lines="full">
+        <ion-item *ngFor="let res of reservacionesActivas">
+          <ion-icon name="calendar-outline" slot="start" color="success"></ion-icon>
+          <ion-label>
+            <h2>{{ res.nombreProfesional }}</h2>
+            <p>{{ res.fecha }} — {{ res.hora }}</p>
+            <ion-badge color="success">Confirmada</ion-badge>
+            <div class="sol-acciones">
+              <ion-button size="small" fill="outline" color="danger" [disabled]="procesando === res._id" (click)="solicitarCancelacion(res._id)">
+                <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+                {{ procesando === res._id ? 'Enviando...' : 'Solicitar cancelación' }}
+              </ion-button>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div *ngIf="solicitudes.length > 0">
+      <div class="seccion-titulo">Solicitudes de cancelación</div>
+      <ion-list lines="full">
+        <ion-item *ngFor="let sol of solicitudes">
+          <ion-icon name="close-circle-outline" slot="start" color="danger"></ion-icon>
+          <ion-label>
+            <h2>{{ esProfesional ? sol.nombreCliente : sol.nombreProfesional }}</h2>
+            <p>{{ sol.fecha }} — {{ sol.hora }}</p>
+
+            <ion-badge color="danger" *ngIf="esMiaSolicitud(sol)">
+              Esperando confirmación
+            </ion-badge>
+            <ion-badge color="warning" *ngIf="puedeCancelar(sol)">
+              Solicitud recibida
+            </ion-badge>
+
+            <div class="sol-acciones" *ngIf="puedeCancelar(sol)">
+              <ion-button size="small" fill="outline" color="danger" [disabled]="procesando === sol._id" (click)="confirmarCancelacion(sol._id)">
+                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+                {{ procesando === sol._id ? 'Procesando...' : 'Confirmar cancelación' }}
+              </ion-button>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+
+
+    <div *ngIf="reservacionesActivas.length === 0 && solicitudes.length === 0" class="empty">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <p>No tienes reservaciones ni solicitudes</p>
+    </div>
+
+  </div>
+
+</ion-content>

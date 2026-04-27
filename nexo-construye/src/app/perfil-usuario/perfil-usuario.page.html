@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="irANotificaciones()">
+        <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+        <ion-badge *ngIf="totalNoLeidas > 0" color="danger" class="badge-campana">
+          {{ totalNoLeidas }}
+        </ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="perfil-container">
+    <div class="perfil-card">
+
+      <div class="perfil-left">
+        <ion-avatar class="perfil-avatar">
+          <img *ngIf="usuario?.fotoPerfil" [src]="usuario.fotoPerfil" alt="Foto de perfil">
+          <ion-icon *ngIf="!usuario?.fotoPerfil" name="person-circle-outline"></ion-icon>
+        </ion-avatar>
+
+        <div class="perfil-datos-texto">
+          <h2 class="perfil-nombre">{{ usuario?.nombre || 'Usuario' }}</h2>
+          <div class="perfil-info">
+            <div class="info-item">
+              <ion-icon name="mail-outline"></ion-icon>
+              <span>{{ usuario?.correo || 'Sin correo' }}</span>
+            </div>
+            <div class="info-item">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <span>{{ usuario?.edad ? usuario.edad + ' años' : 'Sin edad' }}</span>
+            </div>
+            <div class="info-item">
+              <ion-icon name="map-outline"></ion-icon>
+              <span>{{ usuario?.estado || 'Sin estado' }}</span>
+            </div>
+            <div class="info-item">
+              <ion-icon name="location-outline"></ion-icon>
+              <span>{{ usuario?.municipio || 'Sin municipio' }}</span>
+            </div>
+          </div>
+          <ion-button fill="clear" size="small" routerLink="/actualizar-perfil"
+            [queryParams]="{id: userId}">
+            Editar perfil
+          </ion-button>
+        </div>
+      </div>
+
+      <div class="perfil-right">
+        <ion-button fill="outline" color="warning"
+          [routerLink]="['/crear-perfil-profecional', userId]">
+          Cambiar a Perfil Profesional
+        </ion-button>
+        <ion-button fill="outline" color="medium" routerLink="/solicitudes">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          Mis reservaciones
+        </ion-button>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

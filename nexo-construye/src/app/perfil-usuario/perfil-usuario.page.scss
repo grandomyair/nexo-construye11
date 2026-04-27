@@ -1,0 +1,75 @@
+.perfil-container {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.perfil-card {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between; 
+  align-items: flex-end; 
+  width: 100%;
+  max-width: 900px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 20px;
+}
+
+.perfil-left {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.perfil-avatar {
+  width: 150px;
+  height: 150px;
+  border: 4px solid white;
+  
+  ion-icon {
+    font-size: 150px;
+    color: #aaa;
+  }
+}
+
+.perfil-datos-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.perfil-nombre {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.perfil-info {
+  display: flex;
+  flex-direction: column; 
+  gap: 5px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .perfil-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .perfil-left {
+    flex-direction: column;
+    align-items: center;
+  }
+  .perfil-right {
+    margin-top: 20px;
+    width: 100%;
+  }
+}

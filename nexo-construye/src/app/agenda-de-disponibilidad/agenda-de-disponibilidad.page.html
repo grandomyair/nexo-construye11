@@ -1,0 +1,110 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Agenda de Disponibilidad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="agenda-container">
+
+    <p class="agenda-subtitulo">
+      Marca los días y horarios en que <strong>no estás disponible</strong>.
+    </p>
+
+ 
+    <div class="seccion-card">
+      <p class="seccion-titulo">Bloquear rango de fechas</p>
+      <div class="rango-inputs">
+        <div class="rango-item">
+          <label>Desde</label>
+          <input
+            type="date"
+            class="date-input"
+            [(ngModel)]="rangoInicio"
+            [attr.min]="hoy">
+        </div>
+        <div class="rango-item">
+          <label>Hasta</label>
+          <input
+            type="date"
+            class="date-input"
+            [(ngModel)]="rangoFin"
+            [attr.min]="rangoInicio || hoy">
+        </div>
+      </div>
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="danger"
+        class="btn-bloquear-rango"
+        [disabled]="!rangoInicio || !rangoFin"
+        (click)="bloquearRango()">
+        <ion-icon name="calendar-clear-outline" slot="start"></ion-icon>
+        Bloquear rango
+      </ion-button>
+    </div>
+
+
+    <div class="seccion-card">
+      <p class="seccion-titulo">Bloquear horas de un día específico</p>
+      <input
+        type="date"
+        class="date-input"
+        [(ngModel)]="fechaSeleccionada"
+        [attr.min]="hoy"
+        (change)="onFechaChange()">
+    </div>
+
+
+    <div class="seccion-card" *ngIf="fechaSeleccionada">
+      <p class="seccion-titulo">
+        Horas no disponibles — {{ fechaSeleccionada | date:'dd/MM/yyyy' }}
+      </p>
+      <div class="horas-grid">
+        <ion-chip
+          *ngFor="let hora of horasDisponibles"
+          [color]="estaSeleccionada(hora) ? 'danger' : 'medium'"
+          (click)="toggleHora(hora)">
+          <ion-icon [name]="estaSeleccionada(hora) ? 'close-circle' : 'time-outline'"></ion-icon>
+          <ion-label>{{ hora }}</ion-label>
+        </ion-chip>
+      </div>
+      <ion-button
+        expand="block"
+        fill="outline"
+        class="btn-guardar-horas"
+        (click)="guardarDisponibilidad()"
+        [disabled]="guardando">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Guardar horas
+      </ion-button>
+    </div>
+
+
+   <div class="seccion-card" *ngIf="fechasBloqueadas.length > 0">
+      <p class="seccion-titulo">Días bloqueados</p>
+      <ion-list lines="none">
+        <ion-item *ngFor="let bloqueo of fechasBloqueadas" class="bloqueo-item">
+          <ion-icon name="calendar-clear-outline" slot="start" color="danger"></ion-icon>
+          <ion-label>
+            <h3>{{ bloqueo.fecha | date:'dd/MM/yyyy' }}</h3>
+            <p *ngIf="bloqueo.horas?.length > 0">{{ bloqueo.horas.join(', ') }}</p>
+            <p *ngIf="!bloqueo.horas?.length">Todo el día</p>
+          </ion-label>
+          <ion-button fill="clear" color="danger" slot="end" (click)="eliminarFecha(bloqueo._id)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="empty-state" *ngIf="fechasBloqueadas.length === 0 && !fechaSeleccionada">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <p>No tienes días bloqueados aún.</p>
+    </div>
+
+  </div>
+</ion-content>
