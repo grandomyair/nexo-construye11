@@ -13,15 +13,18 @@ async function crearPerfilProfesional(req, res, client) {
       servicios, etiquetas, portafolio
     } = req.body;
 
-    // Verifica que no exista ya un perfil profesional con ese correo
     const existente = await client.db(DB).collection(COLLECTION).findOne({ correo });
     if (existente) {
       return res.status(400).json({ error: "Ya existe un perfil profesional con ese correo" });
     }
 
+    // Busca el usuario base para obtener su username
+    const usuarioBase = await client.db(DB).collection('Usuarios').findOne({ correo });
+
     const nuevoPerfil = {
       tipo: "profesional",
       nombre: nombre || "",
+      username: usuarioBase?.username || nombre || "",
       edad: edad || 0,
       fotoPerfil: fotoPerfil || "",
       estado: estado || "",
@@ -50,7 +53,6 @@ async function crearPerfilProfesional(req, res, client) {
 
     const result = await client.db(DB).collection(COLLECTION).insertOne(nuevoPerfil);
 
-    // Actualiza el tipo del usuario en la coleccion Usuarios a profesional
     await client.db(DB).collection('Usuarios').updateOne(
       { correo: correo },
       { $set: { tipo: 'profesional' } }
@@ -73,18 +75,28 @@ async function getPerfilProfesional(req, res, client) {
 }
 
 // Devuelve un perfil profesional por su ID
+// Si no tiene username lo asigna del nombre actual y lo guarda
 async function getPerfilProfesionalById(req, res, client) {
   try {
     const { id } = req.params;
     const perfil = await client.db(DB).collection(COLLECTION).findOne({ _id: new ObjectId(id) });
     if (!perfil) return res.status(404).json({ error: "Perfil no encontrado" });
+
+    if (!perfil.username) {
+      await client.db(DB).collection(COLLECTION).updateOne(
+        { _id: perfil._id },
+        { $set: { username: perfil.nombre } }
+      );
+      perfil.username = perfil.nombre;
+    }
+
     res.json(perfil);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 }
 
-// Actualiza solo los campos permitidos de un perfil profesional
+// Actualiza solo los campos permitidos - username NO esta en la lista para que nunca cambie
 async function actualizarPerfilProfesional(req, res, client) {
   try {
     const { id } = req.params;
@@ -98,7 +110,6 @@ async function actualizarPerfilProfesional(req, res, client) {
       'portafolio', 'estadoPerfil', 'activo'
     ];
 
-    // Solo agrega al objeto de actualizacion los campos que esten en la lista de permitidos
     permitidos.forEach(campo => {
       if (campos[campo] !== undefined) updateData[campo] = campos[campo];
     });

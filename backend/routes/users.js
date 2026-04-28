@@ -19,24 +19,32 @@ module.exports = (client) => {
   });
 
   router.get('/:id', verificarToken, async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { ObjectId } = require('mongodb');
+  try {
+    const { id } = req.params;
+    const { ObjectId } = require('mongodb');
 
-      const usuario = await client.db("nexo").collection("Usuarios").findOne({ 
-        _id: new ObjectId(id) 
-      });
+    const usuario = await client.db("nexo").collection("Usuarios").findOne({
+      _id: new ObjectId(id)
+    });
 
-      if (!usuario) {
-        return res.status(404).json({ error: "Usuario no encontrado" });
-      }
-
-      const { contraseña, ...usuarioSeguro } = usuario;
-      res.json(usuarioSeguro);
-    } catch (err) {
-      res.status(500).json({ error: err.message });
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
-  });
+
+    if (!usuario.username) {
+      await client.db("nexo").collection("Usuarios").updateOne(
+        { _id: usuario._id },
+        { $set: { username: usuario.nombre } }
+      );
+      usuario.username = usuario.nombre;
+    }
+
+    const { contraseña, ...usuarioSeguro } = usuario;
+    res.json(usuarioSeguro);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
   router.post('/register', async (req, res) => {
     try {
@@ -58,19 +66,19 @@ module.exports = (client) => {
 
       const contraseñaEncriptada = await bcrypt.hash(contraseña, 10);
 
-      const nuevoUsuario = {
-        tipo: tipo || "",
-        nombre: nombre || "",
-        edad: edad || 0,
-        fotoPerfil: fotoPerfil || "",
-        municipio: municipio || "",
-        estado: estado || "",
-        correo: correo || "",
-        contraseña: contraseñaEncriptada,
-        rol: "usuario",
-        fechaRegistro: new Date(),
-        activo: true
-      };
+     const nuevoUsuario = {
+      nombre: nombre || "",
+      username: nombre || "",
+      edad: edad || 0,
+      fotoPerfil: fotoPerfil || "",
+      municipio: municipio || "",
+      estado: estado || "",
+      correo: correo || "",
+      contraseña: contraseñaEncriptada,
+      rol: "usuario",
+      fechaRegistro: new Date(),
+      activo: true
+    };
 
       const result = await client.db("nexo").collection("Usuarios").insertOne(nuevoUsuario);
       res.json({ 

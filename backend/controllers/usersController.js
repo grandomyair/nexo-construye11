@@ -3,20 +3,24 @@ const { client } = require('../utils/db');
 // Crea un nuevo usuario verificando que no exista ya uno con el mismo correo
 async function createUser(req, res) {
   try {
-    const { email, username, password } = req.body;
+    console.log('Body recibido:', req.body);
+    const { nombre, correo, contraseña } = req.body;
+    console.log('nombre:', nombre);
 
-    // Verifica que se enviaron todos los campos obligatorios
-    if (!email || !username || !password) {
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
-    }
-
-    // Verifica que no exista ya un usuario con ese correo
-    const existingUser = await client.db("nexo").collection("Usuarios").findOne({ email });
+    const existingUser = await client.db("nexo").collection("Usuarios").findOne({ correo });
     if (existingUser) {
       return res.status(400).json({ error: "Usuario ya registrado" });
     }
 
-    const result = await client.db("nexo").collection("Usuarios").insertOne({ email, username, password });
+    const result = await client.db("nexo").collection("Usuarios").insertOne({
+      nombre: nombre || '',
+      username: nombre || '',
+      correo,
+      contraseña,
+      fotoPerfil: '',
+      rol: 'usuario',
+      fechaRegistro: new Date()
+    });
     res.status(201).json({ message: "Usuario registrado", id: result.insertedId });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -34,25 +38,36 @@ async function getAllUsers(req, res) {
 }
 
 // Devuelve un usuario por su ID, si no existe devuelve error 404
+// Si el usuario no tiene username lo asigna automaticamente con su nombre actual
 async function getUserById(req, res) {
   try {
     const id = req.params.id;
     const user = await client.db("nexo").collection("Usuarios").findOne({ _id: new require('mongodb').ObjectId(id) });
     if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    if (!user.username) {
+      await client.db("nexo").collection("Usuarios").updateOne(
+        { _id: user._id },
+        { $set: { username: user.nombre } }
+      );
+      user.username = user.nombre;
+    }
+
     res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 }
 
-// Actualiza el correo, nombre de usuario y contrasena de un usuario por su ID
+// Actualiza solo nombre, edad, estado, municipio y foto - el username nunca se toca
 async function updateUser(req, res) {
   try {
     const id = req.params.id;
-    const { email, username, password } = req.body;
+    const { nombre, edad, estado, municipio, fotoPerfil } = req.body;
+
     const result = await client.db("nexo").collection("Usuarios").updateOne(
       { _id: new require('mongodb').ObjectId(id) },
-      { $set: { email, username, password } }
+      { $set: { nombre, edad, estado, municipio, fotoPerfil } }
     );
 
     if (result.matchedCount === 0) return res.status(404).json({ error: "Usuario no encontrado" });

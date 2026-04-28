@@ -33,6 +33,7 @@
         <div class="perfil-info-main">
           <div>
             <h2 class="perfil-nombre">{{ profesional?.nombre || 'Profesional' }}</h2>
+              <p class="perfil-username">@{{ profesional?.username || profesional?.nombre }}</p>
             <p class="perfil-profesion">{{ profesional?.profesion }}
               <span *ngIf="profesional?.especialidad"> · {{ profesional?.especialidad }}</span>
             </p>

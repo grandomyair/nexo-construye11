@@ -44,7 +44,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Cadena de conexion a MongoDB Atlas tomada del archivo .env
+// Cadena de conexion a MongoDB Atlas 
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 

@@ -27,6 +27,7 @@
 
         <div class="perfil-datos-texto">
           <h2 class="perfil-nombre">{{ usuario?.nombre || 'Usuario' }}</h2>
+            <p class="perfil-username">@{{ usuario?.username || usuario?.nombre }}</p>
           <div class="perfil-info">
             <div class="info-item">
               <ion-icon name="mail-outline"></ion-icon>
