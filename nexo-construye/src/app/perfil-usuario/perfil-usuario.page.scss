@@ -1,3 +1,29 @@
+:host {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+}
+
+ion-content {
+  --background: #000000;
+}
+
+ion-toolbar {
+  --background: #000000;
+  --color: #ffffff;
+}
+
+ion-back-button {
+  --color: #ffffff;
+}
+
+ion-title {
+  color: #ffffff;
+}
+
+ion-button {
+  --color: #ffffff;
+}
+
 .perfil-container {
   padding: 20px;
   display: flex;
@@ -6,12 +32,12 @@
 
 .perfil-card {
   display: flex;
-  flex-direction: row; 
-  justify-content: space-between; 
-  align-items: flex-end; 
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
   width: 100%;
   max-width: 900px;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   padding-bottom: 20px;
 }
 
@@ -24,11 +50,11 @@
 .perfil-avatar {
   width: 150px;
   height: 150px;
-  border: 4px solid white;
-  
+  border: 4px solid rgba(255, 255, 255, 0.3);
+
   ion-icon {
     font-size: 150px;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.3);
   }
 }
 
@@ -42,11 +68,20 @@
   font-size: 2rem;
   font-weight: bold;
   margin: 0;
+  color: #ffffff;
+  background: transparent;
+}
+
+.perfil-username {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  background: transparent;
 }
 
 .perfil-info {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   gap: 5px;
 }
 
@@ -55,7 +90,19 @@
   align-items: center;
   gap: 8px;
   font-size: 0.9rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.6);
+
+  ion-icon {
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.perfil-right {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 768px) {
@@ -64,18 +111,14 @@
     align-items: center;
     text-align: center;
   }
+
   .perfil-left {
     flex-direction: column;
     align-items: center;
   }
+
   .perfil-right {
     margin-top: 20px;
     width: 100%;
   }
-
-  .perfil-username {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.4);
-  margin: 0;
-}
 }

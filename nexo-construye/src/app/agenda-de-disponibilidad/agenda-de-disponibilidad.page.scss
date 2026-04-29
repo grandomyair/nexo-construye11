@@ -1,3 +1,42 @@
+:host {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+}
+
+ion-content {
+  --background: #000000;
+}
+
+ion-toolbar {
+  --background: #000000;
+  --color: #ffffff;
+}
+
+ion-back-button {
+  --color: #ffffff;
+}
+
+ion-title {
+  color: #ffffff;
+}
+
+ion-item {
+  --background: #1a1a1a;
+  --color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.08);
+}
+
+ion-list {
+  background: transparent;
+}
+
+ion-chip {
+  cursor: pointer;
+  transition: transform 0.1s;
+
+  &:active { transform: scale(0.95); }
+}
+
 .agenda-container {
   padding: 16px;
   max-width: 600px;
@@ -5,39 +44,42 @@
 }
 
 .agenda-subtitulo {
-  color: var(--ion-color-medium);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 14px;
   margin-bottom: 16px;
+
+  strong { color: rgba(255, 255, 255, 0.7); }
 }
 
 .seccion-card {
-  background: var(--ion-card-background, #fff);
+  background: #111111;
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .seccion-titulo {
   font-weight: 600;
   font-size: 15px;
-  color: var(--ion-color-dark);
+  color: rgba(255, 255, 255, 0.8);
   margin: 0 0 12px 0;
 }
 
 .date-input {
   width: 100%;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 0.9rem;
-  color: var(--ion-color-dark);
+  color: rgba(255, 255, 255, 0.8);
   outline: none;
   box-sizing: border-box;
 
   &::-webkit-calendar-picker-indicator {
-    opacity: 0.6;
+    filter: invert(1);
+    opacity: 0.4;
     cursor: pointer;
   }
 }
@@ -58,19 +100,15 @@
 
   label {
     font-size: 0.72rem;
-    color: var(--ion-color-medium);
+    color: rgba(255, 255, 255, 0.35);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 }
 
-.btn-bloquear-rango {
-  margin-top: 4px;
-}
+.btn-bloquear-rango { margin-top: 4px; }
 
-.btn-guardar-horas {
-  margin-top: 16px;
-}
+.btn-guardar-horas { margin-top: 16px; }
 
 .horas-grid {
   display: flex;
@@ -78,18 +116,9 @@
   gap: 8px;
 }
 
-ion-chip {
-  cursor: pointer;
-  transition: transform 0.1s;
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
 .bloqueo-item {
+  --background: rgba(255, 255, 255, 0.04);
   --border-radius: 8px;
-  --background: var(--ion-color-light);
   margin-bottom: 8px;
   border-radius: 8px;
 }
@@ -97,7 +126,7 @@ ion-chip {
 .empty-state {
   text-align: center;
   padding: 48px 16px;
-  color: var(--ion-color-medium);
+  color: rgba(255, 255, 255, 0.25);
 
   ion-icon {
     font-size: 56px;

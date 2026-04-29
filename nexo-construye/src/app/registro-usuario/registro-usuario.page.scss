@@ -1,5 +1,19 @@
+:host {
+  --ion-background-color: #1a1a1a;
+  --ion-text-color: #ffffff;
+}
+
 ion-content {
   --background: #1a1a1a;
+}
+
+ion-item {
+  --background: #1a1a1a;
+  --color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.2);
+
+  ion-label { color: rgba(255, 255, 255, 0.7) !important; }
+  ion-input { --color: #ffffff; --placeholder-color: rgba(255, 255, 255, 0.3); }
 }
 
 .container {

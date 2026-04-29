@@ -28,9 +28,15 @@
       <ion-input type="text" [(ngModel)]="form.nombre" name="nombre"></ion-input>
     </ion-item>
 
-    <ion-input type="number" [(ngModel)]="form.edad" name="edad" min="1" max="100"
-    (ionBlur)="limitarEdad()">
-    </ion-input>
+    <ion-item>
+        <ion-label position="floating">Edad</ion-label>
+        <ion-input type="number" [(ngModel)]="form.edad" name="edad" min="1" max="100"
+          (ionBlur)="limitarEdad()">
+        </ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="form.edad < 1 || form.edad > 100">
+        <small style="padding-left: 16px;">Escribe una edad correcta entre 1 y 100 años</small>
+    </ion-text>
 
     <ion-item>
       <ion-label position="floating">Estado</ion-label>

@@ -1,3 +1,21 @@
+ion-content {
+  --background: #000000;
+}
+
+ion-toolbar {
+  --background: #000000;
+  --color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.08);
+}
+
+ion-back-button {
+  --color: #ffffff;
+}
+
+ion-title {
+  color: #ffffff;
+}
+
 .perfil-container {
   padding: 24px 16px;
   display: flex;
@@ -530,7 +548,7 @@
     &.der { right: -44px; }
   }
 
-  .perfil-username {
+ .perfil-username {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.4);
   margin: 0;
