@@ -51,8 +51,11 @@
 
       <ion-item>
         <ion-label position="floating">Edad</ion-label>
-        <ion-input [(ngModel)]="form.edad" name="edad" type="number"></ion-input>
+        <ion-input [(ngModel)]="form.edad" name="edad" type="number" min="1" max="100"></ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="form.edad < 1 || form.edad > 100">
+        <small style="padding-left: 16px;">Escribe una edad correcta entre 1 y 100 años</small>
+    </ion-text>
 
       <ion-item>
   <ion-label position="floating">Estado</ion-label>
@@ -111,8 +114,8 @@
           rows="4" [autoGrow]="true"></ion-textarea>
       </ion-item>
 
-      <div class="btn-section">
-        <ion-button expand="block" [disabled]="cargando" (click)="actualizarPerfil()">
+     <div class="btn-section">
+        <ion-button expand="block" [disabled]="cargando || form.edad < 1 || form.edad > 100 || form.anosExperiencia < 0 || form.anosExperiencia > 60" (click)="actualizarPerfil()">
           {{ cargando ? 'Guardando...' : 'Guardar cambios' }}
         </ion-button>
       </div>

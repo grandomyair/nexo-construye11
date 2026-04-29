@@ -97,11 +97,20 @@ export class CrearPerfilProfecionalPage implements OnInit {
   }
 
   // Crea el perfil profesional y sube las imagenes del portafolio si se seleccionaron
-  async crearPerfil() {
+ async crearPerfil() {
     // Verifica que se haya seleccionado una profesion
     if (!this.form.profesion) {
       const toast = await this.toastCtrl.create({
         message: 'La profesion es obligatoria',
+        duration: 2000, color: 'warning'
+      });
+      return toast.present();
+    }
+
+    // Valida que los anos de experiencia sean correctos
+    if (this.form.anosExperiencia < 0 || this.form.anosExperiencia > 60) {
+      const toast = await this.toastCtrl.create({
+        message: 'Escribe una cantidad de anos de experiencia correcta entre 0 y 60',
         duration: 2000, color: 'warning'
       });
       return toast.present();

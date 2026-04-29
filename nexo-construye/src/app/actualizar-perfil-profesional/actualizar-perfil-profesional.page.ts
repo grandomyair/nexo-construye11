@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import {IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel,IonInput, IonButton, IonAvatar, IonIcon, IonButtons, IonBackButton,
-IonSelect, IonSelectOption, IonTextarea, IonToggle, ToastController} from '@ionic/angular/standalone';
+import {IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonAvatar, IonIcon, IonButtons, IonBackButton,
+IonSelect, IonSelectOption, IonTextarea, IonToggle, IonText, ToastController} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personCircleOutline, cameraOutline } from 'ionicons/icons';
 import { UserProfecionalService } from '../userProfecinalService/user-profecional';
@@ -14,9 +14,9 @@ import { EstadosApi } from '../estadosApi/estados-api';
   templateUrl: './actualizar-perfil-profesional.page.html',
   styleUrls: ['./actualizar-perfil-profesional.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel,IonInput, IonButton, IonAvatar, IonIcon, IonButtons, IonBackButton,
-  IonSelect, IonSelectOption, IonTextarea, IonToggle,CommonModule, FormsModule
-  ]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonAvatar, IonIcon, IonButtons, IonBackButton,
+IonSelect, IonSelectOption, IonTextarea, IonToggle, IonText, CommonModule, FormsModule
+]
 })
 export class ActualizarPerfilProfesionalPage implements OnInit {
 
@@ -123,6 +123,19 @@ export class ActualizarPerfilProfesionalPage implements OnInit {
   // Envia los datos actualizados del perfil al backend y redirige al perfil profesional
   async actualizarPerfil() {
     if (!this.userId) { await this.showToast('No se encontro el perfil', 'danger'); return; }
+
+    // Valida que la edad sea correcta
+    if (this.form.edad < 1 || this.form.edad > 100) {
+      await this.showToast('Escribe una edad correcta entre 1 y 100 anos', 'warning');
+      return;
+    }
+
+    // Valida que los anos de experiencia sean correctos
+    if (this.form.anosExperiencia < 0 || this.form.anosExperiencia > 60) {
+      await this.showToast('Escribe una cantidad de anos correcta entre 0 y 60', 'warning');
+      return;
+    }
+
     this.cargando = true;
 
     // Busca el nombre del estado seleccionado para guardarlo en texto

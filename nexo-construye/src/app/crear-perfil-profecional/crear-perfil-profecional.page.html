@@ -43,8 +43,14 @@
 
     <ion-item>
       <ion-label position="stacked">Años de Experiencia</ion-label>
-      <ion-input type="number" [(ngModel)]="form.anosExperiencia" placeholder="0"></ion-input>
+      <ion-input type="number" [(ngModel)]="form.anosExperiencia" placeholder="0"
+        min="0" max="60">
+      </ion-input>
     </ion-item>
+
+<ion-text color="danger" *ngIf="form.anosExperiencia < 0 || form.anosExperiencia > 60">
+  <small style="padding-left: 16px;">Escribe una cantidad de años correcta entre 0 y 60</small>
+</ion-text>
 
     <ion-item>
       <ion-label position="stacked">Biografía</ion-label>
@@ -133,10 +139,10 @@
   </div>
 
   <div class="ion-padding ion-margin-top">
-    <ion-button expand="block" (click)="crearPerfil()" [disabled]="cargando">
-      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
-      {{ cargando ? 'Creando...' : 'Crear Perfil Profesional' }}
-    </ion-button>
+  <ion-button expand="block" (click)="crearPerfil()" [disabled]="cargando || !form.profesion || form.anosExperiencia < 0 || form.anosExperiencia > 60">
+    <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+    {{ cargando ? 'Creando...' : 'Crear Perfil Profesional' }}
+  </ion-button>
   </div>
 
 </ion-content>

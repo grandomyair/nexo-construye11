@@ -93,6 +93,11 @@ export class ActualizarPerfilPage implements OnInit {
     if (!this.userId) { await this.showToast('No se encontro el usuario', 'danger'); return; }
     this.cargando = true;
 
+    if (this.form.edad < 1 || this.form.edad > 100) {
+    await this.showToast('Escribe una edad correcta entre 1 y 100 años', 'warning');
+    return;
+  }
+
     // Busca el nombre del estado seleccionado para guardarlo en texto
     const estadoSeleccionado = this.estados.find(estado => estado._id === this.form.estadoId);
     const datos = {
@@ -125,4 +130,9 @@ export class ActualizarPerfilPage implements OnInit {
     const toast = await this.toastController.create({ message, duration: 3000, position: 'top', color });
     toast.present();
   }
+
+  limitarEdad() {
+  if (this.form.edad > 100) this.form.edad = 100;
+  if (this.form.edad < 1) this.form.edad = 1;
+}
 }
