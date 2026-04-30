@@ -92,9 +92,7 @@ ion-button {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.6);
 
-  ion-icon {
-    color: rgba(255, 255, 255, 0.4);
-  }
+  ion-icon { color: rgba(255, 255, 255, 0.4); }
 }
 
 .perfil-right {
@@ -103,6 +101,56 @@ ion-button {
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.nexo-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 20px 40px;
+  margin-top: 40px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: nowrap;
+}
+
+.footer-logo-izq,
+.footer-logo-der {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  li {
+    font-size: 13px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
+
+    &:hover { color: #fff; }
+  }
 }
 
 @media (max-width: 768px) {
@@ -120,5 +168,26 @@ ion-button {
   .perfil-right {
     margin-top: 20px;
     width: 100%;
+  }
+
+  .nexo-footer { padding: 24px 16px; }
+
+  .footer-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-logo-izq,
+  .footer-logo-der {
+    height: 36px;
   }
 }

@@ -70,4 +70,8 @@ export class PerfilUsuarioPage implements OnInit {
   irANotificaciones() {
     this.router.navigate(['/notificaciones']);
   }
+
+    Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

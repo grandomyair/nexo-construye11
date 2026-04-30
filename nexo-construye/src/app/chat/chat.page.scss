@@ -198,3 +198,23 @@ ion-button {
   justify-content: flex-end;
   margin-top: 4px;
 }
+
+@media (max-width: 768px) {
+  .nexo-footer { padding: 24px 16px; }
+
+  .footer-inner {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .footer-logo-izq,
+  .footer-logo-der {
+    height: 36px;
+  }
+}

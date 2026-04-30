@@ -142,4 +142,8 @@ export class SolicitudesPage implements OnInit {
       }
     });
   }
+
+   Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

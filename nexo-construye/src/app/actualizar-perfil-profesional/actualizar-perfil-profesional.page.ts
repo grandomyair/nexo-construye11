@@ -177,4 +177,9 @@ export class ActualizarPerfilProfesionalPage implements OnInit {
     const toast = await this.toastController.create({ message, duration: 3000, position: 'top', color });
     toast.present();
   }
+
+   Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }
+

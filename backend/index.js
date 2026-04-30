@@ -44,7 +44,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Cadena de conexion a MongoDB Atlas 
+// Cadena de conexion a MongoDB Atlas
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 
@@ -78,16 +78,32 @@ passport.use(new GoogleStrategy({
     let usuario = await client.db('nexo').collection('Usuarios')
       .findOne({ correo });
 
-    // Si no existe lo crea con los datos de su cuenta de Google
+    // Verifica si tiene perfil profesional
+    const perfilProfesional = await client.db('nexo').collection('UsuarioProfecional')
+      .findOne({ correo });
+
     if (!usuario) {
+      // Si no existe lo crea con los datos de su cuenta de Google
       const result = await client.db('nexo').collection('Usuarios').insertOne({
         nombre,
         correo,
+        username: nombre,
+        fotoPerfil: '',
         rol: 'usuario',
+        tipo: perfilProfesional ? 'profesional' : 'usuario',
         fechaRegistro: new Date()
       });
       usuario = await client.db('nexo').collection('Usuarios')
         .findOne({ _id: result.insertedId });
+    } else {
+      // Si ya existe y tiene perfil profesional actualiza su tipo
+      if (perfilProfesional && usuario.tipo !== 'profesional') {
+        await client.db('nexo').collection('Usuarios').updateOne(
+          { correo },
+          { $set: { tipo: 'profesional' } }
+        );
+        usuario.tipo = 'profesional';
+      }
     }
 
     return done(null, usuario);
@@ -113,18 +129,41 @@ app.get('/auth/google',
 );
 
 // Ruta de callback donde Google redirige despues de autenticar al usuario
-// Genera el token y redirige al frontend con los datos del usuario
+// Verifica si tiene perfil profesional y redirige al frontend con los datos correctos
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: 'http://localhost:8100/login' }),
-  (req, res) => {
+  async (req, res) => {
     const usuario = req.user;
+
+    // Verifica si el usuario tiene un perfil profesional
+    const perfilProfesional = await client.db('nexo').collection('UsuarioProfecional')
+      .findOne({ correo: usuario.correo });
+
     const token = `token-${usuario._id}`;
-    const datos = encodeURIComponent(JSON.stringify({
-      id: usuario._id,
-      nombre: usuario.nombre,
-      correo: usuario.correo,
-      rol: usuario.rol || 'usuario'
-    }));
+    let datos;
+
+    if (perfilProfesional) {
+      // Si tiene perfil profesional devuelve los datos del profesional
+      datos = encodeURIComponent(JSON.stringify({
+        id: perfilProfesional._id,
+        nombre: perfilProfesional.nombre,
+        correo: perfilProfesional.correo,
+        fotoPerfil: perfilProfesional.fotoPerfil || '',
+        rol: 'profesional',
+        tipo: 'profesional'
+      }));
+    } else {
+      // Si no tiene perfil profesional devuelve los datos de usuario normal
+      datos = encodeURIComponent(JSON.stringify({
+        id: usuario._id,
+        nombre: usuario.nombre,
+        correo: usuario.correo,
+        fotoPerfil: usuario.fotoPerfil || '',
+        rol: usuario.rol || 'usuario',
+        tipo: usuario.tipo || 'usuario'
+      }));
+    }
+
     res.redirect(`http://localhost:8100/login?token=${token}&usuario=${datos}`);
   }
 );

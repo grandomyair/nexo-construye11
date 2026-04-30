@@ -5,7 +5,7 @@
       <h1 class="logo" routerLink="/nexo-home" style="cursor: pointer;">Nexo</h1>
 
       <div class="header-buttons" *ngIf="!isLoggedIn">
-        <ion-button fill="clear" routerLink="/login">Iniciar Sesión</ion-button>
+        <ion-button fill="clear" routerLink="/login">Iniciar sesión</ion-button>
         <ion-button fill="clear" routerLink="/registro-usuario">Registrarse</ion-button>
         <ion-button fill="outline" (click)="abrirBuscar()">Buscar</ion-button>
       </div>
@@ -41,11 +41,8 @@
 
     <div class="main-content">
       <div class="welcome-section">
-        <p>Bienvenido a nexo</p>
-        <p>un lugar centralizado en servicios en el sector de la construcción.</p>
-        <p>Nos dedicamos a facilitar la conexión entre profesionales y empresas en</p>
-        <p>la industria de la construcción para simplificar y potenciar tus proyectos.</p>
-        <ion-button class="search-btn" fill="outline" (click)="abrirBuscar()">buscar</ion-button>
+        <p>Bienvenido a Nexo, un lugar centralizado en servicios en el sector de la construcción. Nos dedicamos a facilitar la conexión entre profesionales y empresas en la industria de la construcción para simplificar y potenciar tus proyectos.</p>
+        <ion-button class="search-btn" fill="outline" (click)="abrirBuscar()">Buscar</ion-button>
       </div>
     </div>
 
@@ -85,44 +82,44 @@
     </div>
 
     <footer class="nexo-footer">
-  <div class="footer-inner">
-    <img src="assets/Logos Labsol 2023-02.png" alt="Labsol" class="footer-logo-izq">
-    <div class="footer-col">
-      <ul>
-        <li (click)="scrollToTop()">Inicio</li>
-        <li (click)="irAExplorar()"><strong>Explorar Servicios</strong></li>
-        <li routerLink="/acerca-de-nosotros">Acerca de nosotros</li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <ul>
-        <li routerLink="/politica-de-reservacion">Política de reservación</li>
-        <li routerLink="/politica-de-cancelacion">Política de cancelación</li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <ul>
-        <li routerLink="/politica-de-privacidad">Política de Privacidad</li>
-        <li routerLink="/terminos-y-condiciones">Términos y Condiciones</li>
-      </ul>
-    </div>
-    <img src="assets/GPLv3_Logo.svg.png" alt="GPLv3" class="footer-logo-der">
-  </div>
-</footer>
+      <div class="footer-inner">
+        <img src="assets/Logos Labsol 2023-02.png" alt="Labsol" class="footer-logo-izq">
+        <div class="footer-col">
+          <ul>
+            <li (click)="scrollToTop()">Inicio</li>
+            <li (click)="irAExplorar()"><strong>Explorar servicios</strong></li>
+            <li routerLink="/acerca-de-nosotros">Acerca de nosotros</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <ul>
+            <li routerLink="/politica-de-reservacion">Política de reservación</li>
+            <li routerLink="/politica-de-cancelacion">Política de cancelación</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <ul>
+            <li routerLink="/politica-de-privacidad">Política de privacidad</li>
+            <li routerLink="/terminos-y-condiciones">Términos y condiciones</li>
+          </ul>
+        </div>
+        <img src="assets/GPLv3_Logo.svg.png" alt="GPLv3" class="footer-logo-der">
+      </div>
+    </footer>
 
     <div class="search-overlay" *ngIf="mostrarBuscar">
       <div class="panel-box">
         <div class="panel-left">
-          <h4>Como Buscar</h4>
+          <h4>Cómo buscar</h4>
           <ul>
-            <li>Selecciona las fecha en la que deseas contratar un servicio</li>
+            <li>Selecciona la fecha en la que deseas contratar un servicio</li>
             <li>Selecciona todas las etiquetas de servicios que deseas encontrar</li>
-            <li>Presiona el botón "Busca"</li>
+            <li>Presiona el botón "Buscar"</li>
           </ul>
           <div class="section-divider">
             <h4>Explorar</h4>
             <ul>
-              <li>Para explorar el sitio sin previo filtro de búsqueda, solo presiona "Explorar"</li>
+              <li>Para explorar el sitio sin filtro de búsqueda, solo presiona "Explorar"</li>
             </ul>
           </div>
         </div>
@@ -135,8 +132,11 @@
           </div>
           <div class="cal-grid">
             <div class="cal-weekday" *ngFor="let d of weekDays">{{ d }}</div>
-            <div class="cal-day" *ngFor="let day of calendarDays" [class.other-month]="!day.currentMonth" [class.today]="day.isToday" [class.selected]="day.isSelected"
-            (click)="selectDay(day)">
+            <div class="cal-day" *ngFor="let day of calendarDays"
+              [class.other-month]="!day.currentMonth"
+              [class.today]="day.isToday"
+              [class.selected]="day.isSelected"
+              (click)="selectDay(day)">
               {{ day.number }}
             </div>
           </div>
@@ -145,7 +145,9 @@
         <div class="panel-right">
           <h4>Servicios</h4>
           <div class="service-tags">
-            <span *ngFor="let tag of serviceTags" class="tag"[ngClass]="[tag.class, tag.selected ? 'active' : '']"(click)="toggleTag(tag)">
+            <span *ngFor="let tag of serviceTags" class="tag"
+              [ngClass]="[tag.class, tag.selected ? 'active' : '']"
+              (click)="toggleTag(tag)">
               {{ tag.label }}
             </span>
           </div>

@@ -310,4 +310,8 @@ export class PerfilProfesionalPage implements OnInit {
     this.imagenActual = this.imagenActual === this.imagenesVisor.length - 1
       ? 0 : this.imagenActual + 1;
   }
+
+    Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

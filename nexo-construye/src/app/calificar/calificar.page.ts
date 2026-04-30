@@ -98,4 +98,8 @@ export class CalificarPage implements OnInit {
       }
     });
   }
+
+  Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

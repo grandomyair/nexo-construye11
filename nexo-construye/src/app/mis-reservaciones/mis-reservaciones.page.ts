@@ -126,4 +126,8 @@ export class MisReservacionesPage implements OnInit {
       }
     });
   }
+
+    Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

@@ -166,4 +166,8 @@ export class NotificacionesPage implements OnInit, OnDestroy {
   private async mostrarToast(mensaje: string, color: string) {
     (await this.toastCtrl.create({ message: mensaje, duration: 2000, color })).present();
   }
+
+    Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

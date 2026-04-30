@@ -110,4 +110,8 @@ export class SubirProyectoPage implements OnInit {
       }
     });
   }
+
+   Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

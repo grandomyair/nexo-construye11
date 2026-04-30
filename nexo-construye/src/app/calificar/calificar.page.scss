@@ -1,100 +1,71 @@
-.calificar-container {
-  padding: 24px 16px;
-  display: flex;
-  justify-content: center;
+:host {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
 }
 
-.calificar-card {
-  width: 100%;
-  max-width: 500px;
-  background: rgba(255,255,255,0.05);
-  border: 0.5px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
-  padding: 32px 28px;
+ion-content {
+  --background: #000000;
+}
+
+ion-toolbar {
+  --background: #000000;
+  --color: #ffffff;
+}
+
+ion-back-button {
+  --color: #ffffff;
+}
+
+ion-title {
+  color: #ffffff;
+}
+
+.nexo-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 20px 40px;
+  margin-top: 40px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: nowrap;
+}
+
+.footer-logo-izq,
+.footer-logo-der {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+  flex: 1;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
+  gap: 4px;
 
-.calificar-titulo {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0;
-  text-align: center;
-}
+  li {
+    font-size: 13px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
 
-.calificar-subtitulo {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.45);
-  margin: 0;
-  text-align: center;
-}
-
-.estrellas-container {
-  display: flex;
-  gap: 12px;
-}
-
-.estrella {
-  cursor: pointer;
-  transition: transform 0.15s;
-
-  ion-icon {
-    font-size: 40px;
-    color: rgba(255,255,255,0.2);
-    transition: color 0.15s;
+    &:hover { color: #fff; }
   }
-
-  &.activa ion-icon {
-    color: #ffa534;
-  }
-
-  &:hover ion-icon {
-    transform: scale(1.1);
-  }
-}
-
-.calificacion-texto {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.4);
-  margin: 0;
-}
-
-.comentario-section {
-  width: 100%;
-}
-
-.comentario-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  margin: 0 0 8px;
-}
-
-.comentario-input {
-  width: 100%;
-  background: rgba(255,255,255,0.06);
-  border: 0.5px solid rgba(255,255,255,0.15);
-  border-radius: 8px;
-  color: #fff;
-  padding: 12px;
-  font-size: 0.9rem;
-  resize: none;
-  outline: none;
-  box-sizing: border-box;
-
-  &::placeholder {
-    color: rgba(255,255,255,0.25);
-  }
-}
-
-.btn-enviar {
-  width: 100%;
-  --border-radius: 12px;
-  --background: #a78bfa;
-  --color: #fff;
 }

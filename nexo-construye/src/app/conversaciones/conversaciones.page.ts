@@ -105,4 +105,8 @@ export class ConversacionesPage implements OnInit {
       });
     }
   }
+
+    Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

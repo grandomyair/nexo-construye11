@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonAvatar, IonIcon, IonButtons, IonBackButton,
-IonSelect, IonSelectOption, IonTextarea, IonToggle, IonText, ToastController} from '@ionic/angular/standalone';
+IonSelect, IonSelectOption, IonText, ToastController,} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { personCircleOutline, cameraOutline } from 'ionicons/icons';
 import { Api } from '../service/api';
@@ -15,7 +15,7 @@ import { EstadosApi } from '../estadosApi/estados-api';
   styleUrls: ['./actualizar-perfil.page.scss'],
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonButton, IonAvatar, IonIcon, IonButtons, IonBackButton,
-  IonSelect, IonSelectOption, IonTextarea, IonToggle, IonText, CommonModule, FormsModule
+  IonSelect, IonSelectOption, IonText, CommonModule, FormsModule
   ]
 })
 export class ActualizarPerfilPage implements OnInit {
@@ -135,4 +135,7 @@ export class ActualizarPerfilPage implements OnInit {
   if (this.form.edad > 100) this.form.edad = 100;
   if (this.form.edad < 1) this.form.edad = 1;
 }
+ Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }

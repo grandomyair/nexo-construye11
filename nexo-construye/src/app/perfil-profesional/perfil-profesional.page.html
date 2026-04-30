@@ -222,4 +222,31 @@
       {{ imagenActual + 1 }} / {{ imagenesVisor.length }}
     </div>
   </div>
+
+  <footer class="nexo-footer">
+  <div class="footer-inner">
+    <img src="assets/Logos Labsol 2023-02.png" alt="Labsol" class="footer-logo-izq">
+    <div class="footer-links">
+      <div class="footer-col">
+        <ul>
+          <li (click)="Rutas('/politica-de-reservacion')">Política de reservación</li>
+          <li (click)="Rutas('/politica-de-cancelacion')">Política de cancelación</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <ul>
+          <li (click)="Rutas('/acerca-de')">Acerca de</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <ul>
+          <li (click)="Rutas('/politica-de-privacidad')">Política de Privacidad</li>
+          <li (click)="Rutas('/terminos-y-condiciones')">Términos y Condiciones</li>
+        </ul>
+      </div>
+    </div>
+    <img src="assets/GPLv3_Logo.svg.png" alt="GPLv3" class="footer-logo-der">
+  </div>
+</footer>
+
 </div>

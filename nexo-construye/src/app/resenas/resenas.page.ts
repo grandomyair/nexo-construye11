@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {IonContent, IonHeader, IonTitle, IonToolbar, IonIcon,IonButtons, IonBackButton, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -26,8 +26,7 @@ export class ResenasPage implements OnInit {
   readonly estrellas = [1, 2, 3, 4, 5];
 
   constructor(
-    private route: ActivatedRoute,
-    private reseñaService: ReseñaService
+    private route: ActivatedRoute,private reseñaService: ReseñaService,public router: Router
   ) {
     addIcons({ starOutline, star, personCircleOutline });
   }
@@ -51,5 +50,9 @@ export class ResenasPage implements OnInit {
   promedio(): number {
     if (!this.resenas.length) return 0;
     return parseFloat((this.resenas.reduce((acumulador, resena) => acumulador + resena.calificacion, 0) / this.resenas.length).toFixed(1));
+  }
+
+    Rutas(ruta: string) {
+    this.router.navigate([ruta]);
   }
 }

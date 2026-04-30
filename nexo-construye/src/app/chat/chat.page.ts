@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {IonContent, IonHeader, IonTitle, IonToolbar,IonFooter, IonInput, IonButton, IonIcon,
 IonButtons, IonBackButton, IonSpinner, ToastController} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -38,7 +38,7 @@ export class ChatPage implements OnInit, OnDestroy {
     return this.usuario?._id || this.usuario?.id || '';
   }
 
-  constructor(private route: ActivatedRoute,private conversacionService: ConversacionService,private toastCtrl: ToastController
+  constructor(private route: ActivatedRoute,private conversacionService: ConversacionService,private toastCtrl: ToastController,private router: Router
   ) {
     addIcons({ sendOutline, personCircleOutline });
   }
@@ -126,5 +126,9 @@ export class ChatPage implements OnInit, OnDestroy {
   // Muestra un mensaje temporal en la pantalla
   private async mostrarToast(message: string, color: string) {
     (await this.toastCtrl.create({ message, duration: 2000, color })).present();
+  }
+
+  Rutas(ruta: string) {
+    this.router.navigate([ruta]);
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {IonContent, IonHeader, IonTitle, IonToolbar, IonButtons,IonBackButton, IonChip, IonIcon, IonLabel, IonList, IonItem,
 IonButton, ToastController, LoadingController} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -37,7 +37,7 @@ export class AgendaDeDisponibilidadPage implements OnInit {
   ];
 
   constructor(private route: ActivatedRoute,private fechaService: FechaNoDisponibleService,
-  private toastCtrl: ToastController,private loadingCtrl: LoadingController
+  private toastCtrl: ToastController,private loadingCtrl: LoadingController,private router: Router
   ) {
     addIcons({
       calendarOutline, calendarClearOutline, timeOutline,
@@ -217,5 +217,9 @@ export class AgendaDeDisponibilidadPage implements OnInit {
       },
       error: (err) => console.error(err)
     });
+  }
+
+   Rutas(ruta: string) {
+    this.router.navigate([ruta]);
   }
 }
