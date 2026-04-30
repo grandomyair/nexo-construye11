@@ -4,14 +4,16 @@
       <ion-back-button defaultHref="/nexo-home"></ion-back-button>
     </ion-buttons>
     <ion-title>Perfil Profesional</ion-title>
-    <ion-buttons slot="end" *ngIf="esPropietario">
+      <ion-buttons slot="end" *ngIf="esPropietario">
+    <div style="position: relative; display: inline-flex; align-items: center;">
       <ion-button (click)="irAMensajes()">
         <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
-        <ion-badge *ngIf="totalNoLeidos > 0" color="danger" class="badge-campana">
-          {{ totalNoLeidos }}
-        </ion-badge>
       </ion-button>
-    </ion-buttons>
+      <ion-badge *ngIf="totalNoLeidos > 0" color="danger" class="badge-campana">
+        {{ totalNoLeidos }}
+      </ion-badge>
+    </div>
+  </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

@@ -321,17 +321,17 @@ ion-title {
 
 .badge-campana {
   position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 9px;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 8px;
+  top: 0px;
+  right: 0px;
+  font-size: 10px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  pointer-events: none;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
-  z-index: 10;
 }
 
 .loading {
