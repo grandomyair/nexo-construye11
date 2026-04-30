@@ -264,4 +264,8 @@ export class NexoHomePage implements OnInit {
         && a.getMonth()    === b.getMonth()
         && a.getDate()     === b.getDate();
   }
+
+    Rutas(ruta: string) {
+    this.router.navigate([ruta]);
+  }
 }
