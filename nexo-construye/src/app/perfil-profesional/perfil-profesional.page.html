@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="/nexo-home"></ion-back-button>
     </ion-buttons>
     <ion-title>Perfil Profesional</ion-title>
-      <ion-buttons slot="end" *ngIf="esPropietario">
+    <ion-buttons slot="end" *ngIf="esPropietario">
     <div style="position: relative; display: inline-flex; align-items: center;">
       <ion-button (click)="irAMensajes()">
         <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
@@ -101,7 +101,7 @@
   </ion-button>
   <div class="btn-chat-wrapper">
     <ion-button fill="outline" size="small" routerLink="/solicitudes">
-      <ion-icon name="time-outline" slot="start"></ion-icon>Solicitudes
+      <ion-icon name="time-outline" slot="start"></ion-icon>Solicitud de cancelacion
     </ion-button>
     <ion-badge *ngIf="totalSolicitudes > 0" color="danger" class="badge-chat">
       {{ totalSolicitudes }}
@@ -114,8 +114,8 @@
     <ion-button fill="outline" size="small" routerLink="/conversaciones">
       <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>Chats
     </ion-button>
-    <ion-badge *ngIf="totalNoLeidos > 0" color="danger" class="badge-chat">
-      {{ totalNoLeidos }}
+    <ion-badge *ngIf="totalChatsNoLeidos > 0" color="danger" class="badge-chat">
+      {{ totalChatsNoLeidos }}
     </ion-badge>
   </div>
 </div>
@@ -141,8 +141,16 @@
           </div>
         </div>
 
-        <ion-button *ngIf="fechaSeleccionada && horaSeleccionada && !chatHabilitado" fill="outline" size="small" (click)="enviarReserva()">
-          <ion-icon name="calendar-outline" slot="start"></ion-icon>Solicitar servicio
+        <ion-button *ngIf="fechaSeleccionada && horaSeleccionada && !chatHabilitado && !reservaEnviada"fill="outline" size="small"(click)="enviarReserva()"
+          [disabled]="enviandoReserva">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          {{ enviandoReserva ? 'Enviando...' : 'Solicitar servicio' }}
+        </ion-button>
+
+        <ion-button *ngIf="reservaEnviada && !chatHabilitado"
+          fill="outline" size="small" disabled>
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          Esperando aceptación
         </ion-button>
 
         <ion-button *ngIf="chatHabilitado" fill="outline" size="small" (click)="abrirChat()">

@@ -57,7 +57,6 @@ async function enviarMensaje(req, res, client) {
     const { conversacionId } = req.params;
     const { autorId, nombreAutor, texto } = req.body;
 
-    // Construye el objeto del mensaje con su ID, autor, texto, fecha y estado de leido
     const mensaje = {
       _id: new ObjectId(),
       autorId: new ObjectId(autorId),
@@ -67,19 +66,34 @@ async function enviarMensaje(req, res, client) {
       leido: false
     };
 
-    // Agrega el mensaje al array de mensajes y actualiza el ultimo mensaje de la conversacion
     await client.db(DB).collection(COLLECTION).updateOne(
       { _id: new ObjectId(conversacionId) },
       {
         $push: { mensajes: mensaje },
-        $set: {
-          ultimoMensaje: texto,
-          fechaUltimoMensaje: new Date()
-        }
+        $set: { ultimoMensaje: texto, fechaUltimoMensaje: new Date() }
       }
     );
 
-    // Si Socket.io esta activo emite el mensaje en tiempo real a los participantes
+    const conversacion = await client.db(DB).collection(COLLECTION)
+      .findOne({ _id: new ObjectId(conversacionId) });
+
+    if (conversacion && conversacion.mensajes.length > 1) {
+      const destinatarioId = conversacion.participantes.find(
+        participante => participante.toString() !== autorId.toString()
+      );
+
+      if (destinatarioId) {
+        const { crearNotificacion } = require('./notificacionController');
+        await crearNotificacion(
+          client,
+          destinatarioId.toString(),
+          'mensaje_nuevo',
+          `${nombreAutor} te envió un mensaje`,
+          conversacionId
+        );
+      }
+    }
+
     const io = client._io;
     if (io) {
       io.to(conversacionId).emit('mensaje', mensaje);
@@ -90,6 +104,7 @@ async function enviarMensaje(req, res, client) {
     res.status(500).json({ error: err.message });
   }
 }
+
 
 // Devuelve todos los mensajes de una conversacion
 async function getMensajes(req, res, client) {

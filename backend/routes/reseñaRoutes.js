@@ -1,10 +1,6 @@
 const express = require('express');
 const { verificarToken } = require('../middlewares/auth');
-const {
-  crearReseña,
-  getReseñasByProfesional,
-  getReseñaById,
-  eliminarReseña
+const {crearReseña,getReseñasByProfesional,getReseñaById,eliminarReseña
 } = require('../controllers/reseñaController');
 
 module.exports = (client) => {

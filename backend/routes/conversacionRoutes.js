@@ -1,11 +1,6 @@
 const express = require('express');
 const { verificarToken } = require('../middlewares/auth');
-const {
-  obtenerOCrearConversacion,
-  enviarMensaje,
-  getMensajes,
-  getConversacionesByUsuario,
-  marcarComoLeidos
+const {obtenerOCrearConversacion,enviarMensaje,getMensajes,getConversacionesByUsuario,marcarComoLeidos
 } = require('../controllers/conversacionController');
 
 module.exports = (client) => {

@@ -1,16 +1,20 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/nexo-home"></ion-back-button>
-    </ion-buttons>
-    <ion-title>
-      Notificaciones
-      <ion-badge *ngIf="noLeidas > 0" color="danger" class="badge-titulo">
-        {{ noLeidas }}
-      </ion-badge>
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/nexo-home"></ion-back-button>
+  </ion-buttons>
+  <ion-title>
+    Notificaciones
+    <ion-badge *ngIf="noLeidas > 0" color="danger" class="badge-titulo">
+      {{ noLeidas }}
+    </ion-badge>
+  </ion-title>
+  <ion-buttons slot="end">
+    <ion-button fill="clear" (click)="confirmarLimpiar()" *ngIf="notificaciones.length > 0">
+     <ion-icon name="trash-outline" slot="start"></ion-icon>
+     Eliminar todas las notificaciones
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
 
 <ion-content [fullscreen]="true">
 
@@ -24,40 +28,52 @@
   </div>
 
   <div class="noti-list" *ngIf="!cargando && notificaciones.length > 0">
-    <div *ngFor="let noti of notificaciones" class="noti-card" [class.no-leida]="!noti.leida" [style.background]="getBgColor(noti.tipo)">
+  <div *ngFor="let noti of notificaciones" class="noti-card"
+    [class.no-leida]="!noti.leida"
+    [style.background]="getBgColor(noti.tipo)"
+    [style.cursor]="noti.tipo === 'mensaje_nuevo' ? 'pointer' : 'default'"
+    (click)="noti.tipo === 'mensaje_nuevo' ? irAlChat(noti) : null">
 
-      <div class="noti-icono-wrapper" [style.background]="getColor(noti.tipo) + '22'">
-        <ion-icon [name]="getIcono(noti.tipo)" [style.color]="getColor(noti.tipo)"></ion-icon>
+    <div class="noti-icono-wrapper" [style.background]="getColor(noti.tipo) + '22'">
+      <ion-icon [name]="getIcono(noti.tipo)" [style.color]="getColor(noti.tipo)"></ion-icon>
+    </div>
+
+    <div class="noti-body">
+      <div class="noti-header-row">
+        <span class="noti-titulo" [style.color]="getColor(noti.tipo)">
+          {{ getTitulo(noti.tipo) }}
+        </span>
+        <span class="noti-dot" *ngIf="!noti.leida"></span>
+      </div>
+      <p class="noti-mensaje">{{ noti.mensaje }}</p>
+      <p class="noti-fecha">{{ noti.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
+
+      <div class="noti-acciones" *ngIf="noti.tipo === 'reserva_nueva' && noti.reservacionId">
+        <ion-button size="small" color="success" fill="solid" (click)="aceptarReserva(noti)">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+          Aceptar
+        </ion-button>
+        <ion-button size="small" color="danger" fill="outline" (click)="rechazarReserva(noti)">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+          Rechazar
+        </ion-button>
       </div>
 
-      <div class="noti-body">
-        <div class="noti-header-row">
-          <span class="noti-titulo" [style.color]="getColor(noti.tipo)">
-            {{ getTitulo(noti.tipo) }}
-          </span>
-          <span class="noti-dot" *ngIf="!noti.leida"></span>
-        </div>
-        <p class="noti-mensaje">{{ noti.mensaje }}</p>
-        <p class="noti-fecha">{{ noti.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
-
-        <div class="noti-acciones" *ngIf="noti.tipo === 'reserva_nueva' && noti.reservacionId">
-          <ion-button size="small" color="success" fill="solid" (click)="aceptarReserva(noti)">
-            <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
-            Aceptar
-          </ion-button>
-          <ion-button size="small" color="danger" fill="outline" (click)="rechazarReserva(noti)">
-            <ion-icon name="close-circle-outline" slot="start"></ion-icon>
-            Rechazar
-          </ion-button>
-        </div>
+      <div class="noti-acciones" *ngIf="noti.tipo === 'mensaje_nuevo' && noti.reservacionId">
+        <ion-button size="small" color="primary" fill="solid" (click)="irAlChat(noti); $event.stopPropagation()">
+          <ion-icon name="chatbubble-outline" slot="start"></ion-icon>
+          Leer mensaje
+        </ion-button>
       </div>
-
-      <ion-button fill="clear" class="noti-delete" (click)="eliminarNotificacion(noti._id)">
-        <ion-icon name="trash-outline" color="medium"></ion-icon>
-      </ion-button>
 
     </div>
+
+    <ion-button fill="clear" class="noti-delete" (click)="eliminarNotificacion(noti._id); $event.stopPropagation()">
+      <ion-icon name="trash-outline" color="medium"></ion-icon>
+    </ion-button>
+
   </div>
+</div>
 
   <footer class="nexo-footer">
   <div class="footer-inner">

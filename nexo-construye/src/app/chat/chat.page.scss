@@ -1,3 +1,8 @@
+:host {
+  --ion-background-color: #000000;
+  --ion-text-color: #ffffff;
+}
+
 ion-content {
   --background: #000000;
 }
@@ -17,15 +22,6 @@ ion-title {
 
 ion-footer {
   --background: #000000;
-  background: #000000;
-}
-
-.input-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-top: 0.5px solid rgba(255,255,255,0.1);
   background: #000000;
 }
 
@@ -102,22 +98,25 @@ ion-footer {
   align-self: flex-end;
 }
 
-// ── BARRA DE INPUT ────────────────────────────────────────
 .input-bar {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
   border-top: 0.5px solid rgba(255,255,255,0.1);
-  background: var(--ion-background-color);
+  background: #000000;
 }
 
 .input-mensaje {
   flex: 1;
-  --background: rgba(255,255,255,0.06);
+  --background: rgba(255,255,255,0.08);
+  --color: #ffffff;
+  --placeholder-color: rgba(255,255,255,0.35);
   --border-radius: 20px;
   --padding-start: 14px;
   --padding-end: 14px;
+  border: 0.5px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
   font-size: 0.9rem;
 }
 
@@ -126,17 +125,6 @@ ion-button {
   font-size: 1.3rem;
 }
 
-.btn-ubicacion {
-  --color: rgba(255,255,255,0.5);
-  font-size: 20px;
-}
-
-.link-ubicacion {
-  font-size: 0.8rem;
-  color: #a78bfa;
-  text-decoration: underline;
-  margin-top: 2px;
-}
 .burbuja.sistema {
   background: rgba(255, 165, 52, 0.1);
   border: 0.5px solid rgba(255, 165, 52, 0.3);

@@ -32,7 +32,6 @@ export class PerfilProfesionalPage implements OnInit {
   userId = '';
   esPropietario = false;
   isLoggedIn = false;
-  totalNoLeidos = 0;
   totalSolicitudes = 0;
   chatHabilitado = false;
   puedeCalificar = false;
@@ -78,6 +77,12 @@ export class PerfilProfesionalPage implements OnInit {
     return this.usuarioActual._id || this.usuarioActual.id || '';
   }
 
+  enviandoReserva = false;
+
+  totalNoLeidos = 0;     
+  totalChatsNoLeidos = 0;
+  reservaEnviada = false;
+
   constructor(
   private profecionalService: UserProfecionalService,private portafolioService: PortafolioService,private conversacionService: ConversacionService,
   private fechaNoDisponibleService: FechaNoDisponibleService,private reservacionService: ReservacionService,
@@ -105,14 +110,28 @@ export class PerfilProfesionalPage implements OnInit {
 
   // Obtiene el ID del perfil desde la URL y carga el perfil, proyectos y notificaciones
   private inicializar() {
-    this.userId = this.route.snapshot.paramMap.get('id') || '';
-    this.isLoggedIn = !!this.usuarioId;
-    if (this.userId) {
-      this.cargarPerfil();
-      this.cargarProyectos();
-      this.contarNoLeidos();
+  this.userId = this.route.snapshot.paramMap.get('id') || '';
+  this.isLoggedIn = !!this.usuarioId;
+  if (this.userId) {
+    this.cargarPerfil();
+    this.cargarProyectos();
+    this.contarNoLeidos();
+
+    // Escucha notificaciones en tiempo real y muestra toast para que mas se den cuenta ########
+    if (this.esPropietario || this.usuarioId) {
+      this.conversacionService.conectar(this.usuarioId);
+      this.conversacionService.escucharNotificaciones().subscribe(async () => {
+        this.contarNoLeidos();
+        (await this.toastCtrl.create({
+          message: 'Tienes una nueva notificación de reserva',
+          duration: 4000,
+          color: 'primary',
+          position: 'top'
+        })).present();
+      });
     }
   }
+}
 
   // Carga el perfil del profesional y verifica si el usuario es el propietario
   cargarPerfil() {
@@ -127,6 +146,24 @@ export class PerfilProfesionalPage implements OnInit {
       error: (err) => console.error(err)
     });
   }
+
+ contarNoLeidos() {
+  if (!this.usuarioId) return;
+  this.notificacionService.contarNoLeidas(this.usuarioId).subscribe({
+    next: async (res) => {
+      this.totalNoLeidos = res.total;
+      if (res.total > 0 && this.esPropietario) {
+        (await this.toastCtrl.create({
+          message: `Tienes ${res.total} notificación${res.total > 1 ? 'es' : ''} sin leer`,
+          duration: 4000,
+          color: 'primary',
+          position: 'top'
+        })).present();
+      }
+    },
+    error: () => {}
+  });
+}
 
   // Verifica si el usuario tiene una reserva confirmada o completada con este profesional
   // para habilitar el chat o el boton de calificar
@@ -143,13 +180,20 @@ export class PerfilProfesionalPage implements OnInit {
   }
 
   // Cuenta las notificaciones no leidas del usuario para mostrar el badge en la campana
-  contarNoLeidos() {
-    if (!this.usuarioId) return;
-    this.notificacionService.contarNoLeidas(this.usuarioId).subscribe({
-      next: (res) => { this.totalNoLeidos = res.total; },
-      error: () => {}
-    });
-  }
+ contarChatsNoLeidos() {
+  if (!this.usuarioId) return;
+  this.conversacionService.getConversacionesByUsuario(this.usuarioId).subscribe({
+    next: (conversaciones) => {
+      this.totalChatsNoLeidos = conversaciones.reduce((total: number, conv: any) => {
+        const noLeidos = conv.mensajes?.filter(
+          (m: any) => m.autorId?.toString() !== this.usuarioId && !m.leido
+        ).length || 0;
+        return total + noLeidos;
+      }, 0);
+    },
+    error: () => {}
+  });
+}
 
   // Cuenta las solicitudes de cancelacion pendientes para mostrar el badge en el boton solicitudes
   contarSolicitudes() {
@@ -240,7 +284,9 @@ export class PerfilProfesionalPage implements OnInit {
 
   // Envia una solicitud de reserva al profesional con la fecha y hora seleccionadas
  async enviarReserva() {
-  if (!this.usuarioId) { this.router.navigate(['/login']); return; }
+  if (!this.usuarioId || this.enviandoReserva) return;
+  this.enviandoReserva = true;
+
   this.reservacionService.crearReservacion({
     cliente: this.usuarioId,
     profesional: this.userId,
@@ -253,6 +299,8 @@ export class PerfilProfesionalPage implements OnInit {
     next: async (res) => {
       this.reservacionId = res.id;
       this.horaReservada = this.horaSeleccionada;
+      this.reservaEnviada = true;
+      this.enviandoReserva = false;
       if (!this.horasBloqueadas.includes(this.horaSeleccionada))
         this.horasBloqueadas.push(this.horaSeleccionada);
       (await this.toastCtrl.create({
@@ -261,6 +309,7 @@ export class PerfilProfesionalPage implements OnInit {
       })).present();
     },
     error: async () => {
+      this.enviandoReserva = false;
       (await this.toastCtrl.create({
         message: 'Error al enviar la solicitud',
         duration: 2000, color: 'danger'

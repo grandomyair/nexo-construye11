@@ -7,17 +7,21 @@ ion-content {
   --background: #000000;
 }
 
-ion-toolbar {
-  --background: #000000;
-  --color: #ffffff;
-}
-
 ion-back-button {
   --color: #ffffff;
 }
 
 ion-title {
   color: #ffffff;
+}
+
+ion-toolbar {
+  --background: #000000;
+  --color: #ffffff;
+
+  ion-button {
+    --color: #ffffff;
+  }
 }
 
 .loading, .empty {
@@ -174,4 +178,6 @@ ion-title {
 
     &:hover { color: #fff; }
   }
+
+  
 }

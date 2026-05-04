@@ -77,10 +77,24 @@ async function eliminarNotificacion(req, res, client) {
   }
 }
 
+async function eliminarTodasNotificaciones(req, res, client) {
+  try {
+    const { usuarioId } = req.params;
+    await client.db(DB).collection(COLLECTION).deleteMany({ 
+      usuarioId: new ObjectId(usuarioId) 
+    });
+    res.json({ message: 'Notificaciones eliminadas' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+
 module.exports = {
   crearNotificacion,
   getNotificaciones,
   contarNoLeidas,
   marcarTodasLeidas,
-  eliminarNotificacion
+  eliminarNotificacion,
+  eliminarTodasNotificaciones
 };

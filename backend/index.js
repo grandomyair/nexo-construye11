@@ -168,10 +168,6 @@ app.get('/auth/google/callback',
   }
 );
 
-// Rutas para recuperacion de contrasena por correo
-const recuperarPasswordRoutes = require('./routes/recuperarPassword');
-app.use('/auth/password', recuperarPasswordRoutes(client));
-
 // Rutas de usuarios
 const usersRoutes = require('./routes/users')(client);
 app.use('/users', usersRoutes);
@@ -215,32 +211,6 @@ app.use('/conversaciones', conversacionRoutes(client));
 // Rutas de notificaciones
 const notificacionRoutes = require('./routes/notificacionRoutes');
 app.use('/notificaciones', notificacionRoutes(client));
-
-// Maneja las conexiones de Socket.io en tiempo real
-io.on('connection', (socket) => {
-  console.log('Usuario conectado:', socket.id);
-
-  // Une al socket a la sala de una conversacion para recibir sus mensajes
-  socket.on('unirse', (conversacionId) => {
-    socket.join(conversacionId);
-    console.log(`Socket ${socket.id} se unio a sala: ${conversacionId}`);
-  });
-
-  // Une al socket a la sala personal del usuario para recibir sus notificaciones
-  socket.on('unirse_usuario', (usuarioId) => {
-    socket.join(`user_${usuarioId}`);
-    console.log(`Socket ${socket.id} se unio a sala personal: user_${usuarioId}`);
-  });
-
-  // Reenvía el mensaje a todos los participantes de la conversacion
-  socket.on('mensaje', (data) => {
-    io.to(data.conversacionId).emit('mensaje', data.mensaje);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Usuario desconectado:', socket.id);
-  });
-});
 
 app.set('io', io);
 

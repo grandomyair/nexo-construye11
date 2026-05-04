@@ -52,4 +52,8 @@ export class NotificacionService {
       { headers: this.getHeaders() }
     );
   }
+  // elimina todas las notificaciones con un solo click 
+  eliminarTodasNotificaciones(usuarioId: string) {
+  return this.http.delete(`${this.apiUrl}/notificaciones/todas/${usuarioId}`, { headers: this.getHeaders() });
+}
 }

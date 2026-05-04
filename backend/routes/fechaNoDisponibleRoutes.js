@@ -1,10 +1,6 @@
 const express = require('express');
 const { verificarToken } = require('../middlewares/auth');
-const {
-  guardarFechaHoras,
-  getFechasByProfesional,
-  getFechaByDia,
-  eliminarFecha
+const {guardarFechaHoras,getFechasByProfesional,getFechaByDia,eliminarFecha
 } = require('../controllers/fechaNoDisponibleController');
 
 module.exports = (client) => {
